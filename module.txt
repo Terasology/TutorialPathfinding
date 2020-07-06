@@ -1,0 +1,9 @@
+{
+    "id" : "TutorialPathfinding",
+    "version" : "0.1.0-SNAPSHOT",
+    "author" : "",
+    "displayName" : "TutorialPathfinding",
+    "description" : "",
+    "dependencies" : [],
+    "serverSideOnly" : false
+}
