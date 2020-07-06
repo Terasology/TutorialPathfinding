@@ -1,9 +1,11 @@
 {
     "id" : "TutorialPathfinding",
     "version" : "0.1.0-SNAPSHOT",
-    "author" : "",
+    "author" : "agent-q1",
     "displayName" : "TutorialPathfinding",
     "description" : "",
-    "dependencies" : [],
+    "dependencies" : [
+    { "id": "CoreWorlds", "minVersion": "1.1.0" }
+    ],
     "serverSideOnly" : false
 }
