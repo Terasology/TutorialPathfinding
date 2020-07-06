@@ -11,16 +11,25 @@ import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
 import org.terasology.world.generation.facets.SurfaceHeightFacet;
 
+/**
+ * Provides a flat SurfaceHeightFacet set at SURFACE_HEIGHT
+ */
 @Produces(SurfaceHeightFacet.class)
 public class BaseFlatSurfaceProvider implements FacetProvider {
+    // Surface height of the flat surface
     static final int SURFACE_HEIGHT = 10;
 
-
+    /**
+     * @param seed the seed value (typically used for random number generators)
+     */
     @Override
     public void setSeed(long seed) {
 
     }
 
+    /**
+     * This is always called after {@link #setSeed(long)}.
+     */
     @Override
     public void initialize() {
 
@@ -33,12 +42,14 @@ public class BaseFlatSurfaceProvider implements FacetProvider {
         SurfaceHeightFacet surfaceHeightFacet = new SurfaceHeightFacet(region.getRegion(), border3D);
 
         Rect2i processRegion = surfaceHeightFacet.getWorldRegion();
-
+        // Iterating through the positions in the region to be processed and setting the value to SURFACE_HEIGHT at
+        // each point
         for (BaseVector2i pos : processRegion.contents()) {
-            surfaceHeightFacet.setWorld(pos,SURFACE_HEIGHT);
+            surfaceHeightFacet.setWorld(pos, SURFACE_HEIGHT);
         }
 
-        region.setRegionFacet(SurfaceHeightFacet.class,surfaceHeightFacet);
+        // Pass our newly created and populated facet to the region
+        region.setRegionFacet(SurfaceHeightFacet.class, surfaceHeightFacet);
 
     }
 }
