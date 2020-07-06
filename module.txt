@@ -5,7 +5,10 @@
     "displayName" : "TutorialPathfinding",
     "description" : "",
     "dependencies" : [
-    { "id": "CoreWorlds", "minVersion": "1.1.0" }
+    { "id": "CoreWorlds", "minVersion": "1.1.0" },
+    { "id": "CoreRendering", "minVersion": "1.0.0" }
     ],
-    "serverSideOnly" : false
+    "serverSideOnly" : false,
+    "isGameplay": true,
+    "defaultWorldGenerator": "TutorialPathfinding:"
 }
