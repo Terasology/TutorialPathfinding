@@ -10,5 +10,5 @@
     ],
     "serverSideOnly" : false,
     "isGameplay": true,
-    "defaultWorldGenerator": "TutorialPathfinding:"
+    "defaultWorldGenerator": "TutorialPathfinding:FlatWorld"
 }
