@@ -9,8 +9,9 @@ import org.terasology.world.generation.BaseFacetedWorldGenerator;
 import org.terasology.world.generation.WorldBuilder;
 import org.terasology.world.generator.RegisterWorldGenerator;
 import org.terasology.world.generator.plugin.WorldGeneratorPluginLibrary;
+import org.terasology.core.world.generator.facetProviders.SeaLevelProvider;
 
-@RegisterWorldGenerator(id = "baseFlatWorld", displayName = "Base Flat World for Testing Pathfinding")
+
 public class BaseFlatWorldGenerator extends BaseFacetedWorldGenerator {
     @In
     private WorldGeneratorPluginLibrary worldGeneratorPluginLibrary;
@@ -23,6 +24,7 @@ public class BaseFlatWorldGenerator extends BaseFacetedWorldGenerator {
     protected WorldBuilder createWorld() {
         return new WorldBuilder(worldGeneratorPluginLibrary)
                 .addProvider(new BaseFlatSurfaceProvider())
+                .addProvider(new SeaLevelProvider(0))
                 .addRasterizer(new BaseFlatWorldRasterizer());
     }
 }
