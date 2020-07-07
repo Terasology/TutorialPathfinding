@@ -1,82 +1,20 @@
 {
     "alwaysRelevant": true,
-    "persisted": true,
-    "Stand": {
-        "animationPool": [
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyIdleBreathing",
-            "gooeyLookRightLeft",
-            "gooeyLookRightLeft",
-            "gooeyLookRightUp"
-        ]
-    },
-    "Walk": {
-        "animationPool": [
-            "gooeyIdleBreathing"
-        ]
-    },
     "Location": {},
-    "Character": {},
-    "AliveCharacter": {},
-    "CharacterMovement" : {
-        "groundFriction": 16,
-        "speedMultiplier": 0.3,
-        "distanceBetweenFootsteps": 0.2,
-        "distanceBetweenSwimStrokes": 2.5,
-        "height": 1.0,
-        "radius": 0.5,
-        "jumpSpeed": 12
+    "BoxShape" : {
+        "extents" : [1, 1, 1]
     },
-    "Network": {},
-    "MinionMove": {},
-    "Health": {
-        "destroyEntityOnNoHealth" : true,
-        "currentHealth": 30,
-        "maxHealth": 30
+    "RigidBody" : {
     },
-    "BoxShape": {
-        "extents": [
-            1.0,
-            1.0,
-            1.0
-        ]
+    "skeletalmesh" : {
+        "mesh" : "skeleton",
+        "heightOffset" : -0.5,
+        "material" : "skeletonSkin",
+        "animationPool": [
+            "skeletonStand"
+        ],
+        "loop" : true,
+        "scale" : [1, 1, 1]
     },
-    "Trigger": {
-        "detectGroups": [
-            "engine:debris",
-            "engine:sensor"
-        ]
-    },
-    "Citizen": {},
-    "NearbyCitizenEnemies": {},
-    "AttackOnHit": {},
-    "Inventory": {
-        "privateToOwner": false,
-        "itemSlots": [
-            0,
-            0,
-            0,
-            0,
-            0
-        ]
-    }
+    "Network" : {}
 }
