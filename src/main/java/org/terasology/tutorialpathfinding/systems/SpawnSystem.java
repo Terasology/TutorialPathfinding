@@ -5,6 +5,8 @@ package org.terasology.tutorialpathfinding.systems;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -25,27 +27,54 @@ import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 @RegisterSystem(RegisterMode.AUTHORITY)
 public class SpawnSystem extends BaseComponentSystem {
 
+    Logger logger = LoggerFactory.getLogger(SpawnSystem.class);
+
     @In
     private EntityManager entityManager;
 
     @In
     private LocalPlayer localPlayer;
 
+    Prefab baseGooey;
+
     @Override
     public void postBegin() {
-        Prefab baseGooey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
-        localPlayer.getCharacterEntity().send(new CharacterSpawnEvent(baseGooey, new Vector3f(0, 12, 2)));
+        super.postBegin();
+        baseGooey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
+        logger.error("\n sdfsdfs sdfsdfsd \n\n dfsdfsdf{}",baseGooey.getName());
+        spawnCharacter(new Vector3f(0,14,2));
+
+
+    }
+
+    private void spawnCharacter(Vector3f spawnPosition){
+        EntityRef newCharacter = entityManager.create(baseGooey, spawnPosition);
+        logger.error("sdfs spawned \n\n\n {} \n\n\nsdfs", newCharacter.toFullDescription());
+        NetworkComponent networkComponent = new NetworkComponent();
+        networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
+        newCharacter.addComponent(networkComponent);
+        BoxShapeComponent boxShape = new BoxShapeComponent();
+        SkeletalMeshComponent skeletalMesh = newCharacter.getComponent(SkeletalMeshComponent.class);
+        boxShape.extents = new org.terasology.math.geom.Vector3f(1,1,1);
+
+        RigidBodyComponent rigidBody = newCharacter.getComponent(RigidBodyComponent.class);
+        rigidBody.collidesWith = Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT, StandardCollisionGroup.CHARACTER, StandardCollisionGroup.WORLD);
+
+        newCharacter.addOrSaveComponent(boxShape);
+        newCharacter.saveComponent(rigidBody);
 
 
     }
 
 
     @ReceiveEvent
-    public void characterSpawn(CharacterSpawnEvent event, EntityRef character) {
+    public void characterSpawn(CharacterSpawnEvent event, EntityRef player) {
+        logger.error("Called event \n\n\n suhas");
         Prefab prefabToSpawn = event.getCharacterPrefab();
         Vector3f spawnPosition = event.getSpawnPosition();
 
         EntityRef newCharacter = entityManager.create(prefabToSpawn, spawnPosition);
+        logger.error("sdfs in event spawned \n\n\n {} \n\n\nsdfs", newCharacter.toFullDescription());
         NetworkComponent networkComponent = new NetworkComponent();
         networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
         newCharacter.addComponent(networkComponent);
