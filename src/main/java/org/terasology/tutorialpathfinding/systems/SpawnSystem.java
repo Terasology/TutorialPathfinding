@@ -15,6 +15,7 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterMode;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.LocalPlayer;
+import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.network.NetworkComponent;
 import org.terasology.physics.CollisionGroup;
 import org.terasology.physics.StandardCollisionGroup;
@@ -24,7 +25,7 @@ import org.terasology.registry.In;
 import org.terasology.rendering.logic.SkeletalMeshComponent;
 import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 
-@RegisterSystem(RegisterMode.AUTHORITY)
+@RegisterSystem
 public class SpawnSystem extends BaseComponentSystem {
 
     Logger logger = LoggerFactory.getLogger(SpawnSystem.class);
@@ -41,13 +42,18 @@ public class SpawnSystem extends BaseComponentSystem {
     public void postBegin() {
         super.postBegin();
         baseGooey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
-        logger.error("\n sdfsdfs sdfsdfsd \n\n dfsdfsdf{}",baseGooey.getName());
-        spawnCharacter(baseGooey,new Vector3f(0,14,2));
-
-
+        logger.error("\n sdfsdfs sdfsdfsd \n\n dfsdfsdf{}", baseGooey.getName());
     }
 
-    private void spawnCharacter(Prefab prefab, Vector3f spawnPosition){
+    @ReceiveEvent
+    public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player){
+
+        player.send(new CharacterSpawnEvent(
+                baseGooey, new Vector3f(0, 12, 10)
+        ));
+    }
+
+    private void spawnCharacter(Prefab prefab, Vector3f spawnPosition) {
 
         EntityRef newCharacter = entityManager.create(prefab, spawnPosition);
 
@@ -55,10 +61,11 @@ public class SpawnSystem extends BaseComponentSystem {
         networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
         newCharacter.addComponent(networkComponent);
         BoxShapeComponent boxShape = new BoxShapeComponent();
-        boxShape.extents = new org.terasology.math.geom.Vector3f(1,1,1);
+        boxShape.extents = new org.terasology.math.geom.Vector3f(1, 1, 1);
 
         RigidBodyComponent rigidBody = newCharacter.getComponent(RigidBodyComponent.class);
-        rigidBody.collidesWith = Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT, StandardCollisionGroup.CHARACTER, StandardCollisionGroup.WORLD);
+        rigidBody.collidesWith = Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT,
+                StandardCollisionGroup.CHARACTER, StandardCollisionGroup.WORLD);
 
         newCharacter.addOrSaveComponent(boxShape);
         newCharacter.saveComponent(rigidBody);
@@ -72,7 +79,7 @@ public class SpawnSystem extends BaseComponentSystem {
         logger.error("Called event \n\n\n suhas");
         Prefab prefabToSpawn = event.getCharacterPrefab();
         Vector3f spawnPosition = event.getSpawnPosition();
-        spawnCharacter(prefabToSpawn,spawnPosition);
+        spawnCharacter(prefabToSpawn, spawnPosition);
 
     }
 }
