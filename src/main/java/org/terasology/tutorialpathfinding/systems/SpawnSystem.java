@@ -42,19 +42,19 @@ public class SpawnSystem extends BaseComponentSystem {
         super.postBegin();
         baseGooey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
         logger.error("\n sdfsdfs sdfsdfsd \n\n dfsdfsdf{}",baseGooey.getName());
-        spawnCharacter(new Vector3f(0,14,2));
+        spawnCharacter(baseGooey,new Vector3f(0,14,2));
 
 
     }
 
-    private void spawnCharacter(Vector3f spawnPosition){
-        EntityRef newCharacter = entityManager.create(baseGooey, spawnPosition);
-        logger.error("sdfs spawned \n\n\n {} \n\n\nsdfs", newCharacter.toFullDescription());
+    private void spawnCharacter(Prefab prefab, Vector3f spawnPosition){
+
+        EntityRef newCharacter = entityManager.create(prefab, spawnPosition);
+
         NetworkComponent networkComponent = new NetworkComponent();
         networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
         newCharacter.addComponent(networkComponent);
         BoxShapeComponent boxShape = new BoxShapeComponent();
-        SkeletalMeshComponent skeletalMesh = newCharacter.getComponent(SkeletalMeshComponent.class);
         boxShape.extents = new org.terasology.math.geom.Vector3f(1,1,1);
 
         RigidBodyComponent rigidBody = newCharacter.getComponent(RigidBodyComponent.class);
@@ -72,21 +72,7 @@ public class SpawnSystem extends BaseComponentSystem {
         logger.error("Called event \n\n\n suhas");
         Prefab prefabToSpawn = event.getCharacterPrefab();
         Vector3f spawnPosition = event.getSpawnPosition();
-
-        EntityRef newCharacter = entityManager.create(prefabToSpawn, spawnPosition);
-        logger.error("sdfs in event spawned \n\n\n {} \n\n\nsdfs", newCharacter.toFullDescription());
-        NetworkComponent networkComponent = new NetworkComponent();
-        networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
-        newCharacter.addComponent(networkComponent);
-        BoxShapeComponent boxShape = new BoxShapeComponent();
-        SkeletalMeshComponent skeletalMesh = newCharacter.getComponent(SkeletalMeshComponent.class);
-        boxShape.extents = skeletalMesh.mesh.getStaticAabb().getExtents().scale(2.0f);
-
-        RigidBodyComponent rigidBody = newCharacter.getComponent(RigidBodyComponent.class);
-        rigidBody.collidesWith = Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT, StandardCollisionGroup.CHARACTER, StandardCollisionGroup.WORLD);
-
-        newCharacter.addOrSaveComponent(boxShape);
-        newCharacter.saveComponent(rigidBody);
+        spawnCharacter(prefabToSpawn,spawnPosition);
 
     }
 }
