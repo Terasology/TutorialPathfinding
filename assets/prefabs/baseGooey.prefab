@@ -7,11 +7,11 @@
     "RigidBody" : {
     },
     "skeletalmesh" : {
-        "mesh" : "skeleton",
-        "heightOffset" : -0.5,
-        "material" : "skeletonSkin",
+        "mesh" : "engine:floatingCube",
+        "heightOffset" : 0,
+        "material" : "engine:floatingCubeSkin",
         "animationPool": [
-            "skeletonStand"
+            "engine:floatingCubeIdle"
         ],
         "loop" : true,
         "scale" : [1, 1, 1]
