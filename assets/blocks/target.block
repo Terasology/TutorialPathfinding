@@ -1,0 +1,6 @@
+{
+    "basedOn" : "CoreAssets:plant",
+    "entity" : {
+        "prefab" : "TutorialPathfinding:target"
+    }
+}

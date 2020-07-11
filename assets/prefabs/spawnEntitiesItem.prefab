@@ -1,0 +1,9 @@
+{
+    "parent" : "engine:iconItem",
+    "Item" : {
+        "name" : "Spawn Entity",
+        "icon" : "engine:items#buildBlockJob",
+		"usage" : "ON_BLOCK"
+    },
+    "SpawnEntity" : {}
+}

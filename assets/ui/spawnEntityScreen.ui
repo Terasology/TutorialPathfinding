@@ -1,0 +1,107 @@
+{
+    "type" : "SpawnEntityScreenLayer",
+    "skin" : "engine:default",
+    "id" : "spawnEntityScreen",
+    "contents" :
+    {
+        "type" : "RelativeLayout",
+        "contents" : [
+            {
+                "type" : "UIBox",
+                "layoutInfo" : {
+                    "width": 500,
+                    "use-content-height": true,
+                    "position-horizontal-center": {},
+                    "position-vertical-center": {}
+                },
+                "content" : {
+                    "type" : "ColumnLayout",
+                    "columns" : 2,
+                    "verticalSpacing" : 8,
+                    "contents" : [
+                    {
+                        "type" : "RowLayout",
+                        "horizontalSpacing" : 2,
+                        "contents" : [
+                            {
+                                "type" : "UIButton",
+                                "id" : "spawnCritter1",
+                                "text" : "Critter1"
+                            },
+                            {
+                                "type" : "UILabel",
+                                "id" : "labelCritter1",
+                                "layoutInfo" : {
+                                    "width": 500,
+                                    "use-content-height": true
+                                }
+                            }
+                        ]
+                    },
+                        {
+                            "type" : "UISpace",
+                            "size" : [1, 8]
+                        },
+                    {
+                        "type" : "RowLayout",
+                        "horizontalSpacing" : 2,
+                        "contents" : [
+
+                            {
+                                "type" : "UIButton",
+                                "id" : "spawnCritter2",
+                                "text" : "Critter2"
+                            },
+                            {
+                                "type" : "UILabel",
+                                "id" : "labelCritter2",
+                                "layoutInfo" : {
+                                    "width" : 500,
+                                    "use-content-height" : true
+                                }
+                            }
+
+                        ]
+                    },
+                        {
+                            "type" : "UISpace",
+                            "size" : [1, 8]
+                        },
+                    {
+                        "type" : "RowLayout",
+                        "horizontalSpacing" : 2,
+                        "contents" : [
+
+                            {
+                                "type" : "UIButton",
+                                "id" : "spawnCritter3",
+                                "text" : "Critter3"
+                            },
+                            {
+                                "type" : "UILabel",
+                                "id" : "labelCritter3",
+                                "layoutInfo" : {
+                                    "width" : 500,
+                                    "use-content-height" : true
+                                }
+                            }
+
+                        ]
+                    },
+                        {
+                            "type" : "UISpace",
+                            "size" : [1, 8]
+                        }
+                    ],
+
+                    "layoutInfo" : {
+                              "width" : 500,
+                              "height" : 100,
+                              "position-horizontal-center" : {},
+                              "position-vertical-center" : {}
+                    }
+                }
+            }
+        ]
+    }
+}
