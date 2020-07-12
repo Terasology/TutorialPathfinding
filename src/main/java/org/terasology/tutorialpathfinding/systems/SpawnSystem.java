@@ -5,6 +5,7 @@ package org.terasology.tutorialpathfinding.systems;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
@@ -19,6 +20,8 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.JomlUtil;
+import org.terasology.minion.move.MinionMoveComponent;
+import org.terasology.minion.move.MinionMoveSystem;
 import org.terasology.network.NetworkComponent;
 import org.terasology.physics.CollisionGroup;
 import org.terasology.physics.StandardCollisionGroup;
@@ -28,8 +31,13 @@ import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.components.SpawnEntityComponent;
 import org.terasology.tutorialpathfinding.components.PathfindingSpawnerComponent;
 import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
+import org.terasology.world.OnChangedBlock;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.items.BlockItemFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RegisterSystem
 public class SpawnSystem extends BaseComponentSystem {
@@ -48,6 +56,9 @@ public class SpawnSystem extends BaseComponentSystem {
     @In
     private InventoryManager inventoryManager;
 
+    private ArrayList<Vector3i> spawnerPositions = new ArrayList<Vector3i>();
+
+    private Vector3f targetPostion;
 
     Prefab baseGooey;
 
@@ -61,9 +72,7 @@ public class SpawnSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player) {
 
-        player.send(new CharacterSpawnEvent(
-                baseGooey, new Vector3f(0, 12, 10)
-        ));
+
 
 
         BlockItemFactory blockFactory = new BlockItemFactory(entityManager);
@@ -79,29 +88,65 @@ public class SpawnSystem extends BaseComponentSystem {
 
     }
 
+    @ReceiveEvent
+    public void blockchanged(OnChangedBlock event, EntityRef entityRef) {
+        Block newBlock = event.getNewType();
+        Block spawner = blockManager.getBlock("TutorialPathfinding:spawner");
+        Block target = blockManager.getBlock("TutorialPathfinding:target");
+        logger.error((spawner.toString()));
+
+        if (spawner.equals(newBlock)) {
+            logger.error("spawner placed");
+            spawnerPositions.add(JomlUtil.from(event.getBlockPosition()));
+        }
+        if(target.equals(newBlock)){
+            targetPostion = new Vector3f(JomlUtil.from(event.getBlockPosition()));
+        }
+
+
+
+    }
+
     @ReceiveEvent(components = {SpawnEntityComponent.class})
     public void setTarget(ActivateEvent event, EntityRef entityRef) {
 
         logger.error("item activated ");
-        for (EntityRef spawner : entityManager.getEntitiesWith(PathfindingSpawnerComponent.class)) {
+        for (Vector3i spawnerPos : spawnerPositions) {
+
+            spawnerPos.add(0, 2, 0);
+
+            Vector3f floatSpawnerPos = new Vector3f(spawnerPos);
+
+            entityRef.send(new CharacterSpawnEvent(baseGooey, floatSpawnerPos));
 
 
-
-            LocationComponent locationComponent = spawner.getComponent(LocationComponent.class);
-            Vector3f spawnerPos = JomlUtil.from(locationComponent.getWorldPosition()) ;
-
-            PathfindingSpawnerComponent spawnerComponent = spawner.getComponent(PathfindingSpawnerComponent.class);
-
-            logger.error("found at \n {} x  {} y  {}  z\n ", spawnerPos.x , spawnerPos.y , spawnerPos.z);
-
-            entityRef.send(new CharacterSpawnEvent(spawnerComponent.prefabToSpawn, spawnerPos));
+//            LocationComponent locationComponent = spawner.getComponent(LocationComponent.class);
+//            Vector3f spawnerPos = JomlUtil.from(locationComponent.getWorldPosition()) ;
+//
+//            PathfindingSpawnerComponent spawnerComponent = spawner.getComponent(PathfindingSpawnerComponent.class);
+//
+//            logger.error("found at \n {} x  {} y  {}  z\n ", spawnerPos.x , spawnerPos.y , spawnerPos.z);
+//
+//
 
         }
+
+
+
+
     }
 
     private void spawnCharacter(Prefab prefab, Vector3f spawnPosition) {
 
         EntityRef newCharacter = entityManager.create(prefab, spawnPosition);
+
+        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
+        minionMoveComponent.target = JomlUtil.from(targetPostion);
+
+        newCharacter.addOrSaveComponent(minionMoveComponent);
+
+
+
 
         NetworkComponent networkComponent = new NetworkComponent();
         networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
@@ -122,7 +167,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void characterSpawn(CharacterSpawnEvent event, EntityRef player) {
-        logger.error("Called event \n\n\n suhas");
+
         Prefab prefabToSpawn = event.getCharacterPrefab();
         Vector3f spawnPosition = event.getSpawnPosition();
         spawnCharacter(prefabToSpawn, spawnPosition);

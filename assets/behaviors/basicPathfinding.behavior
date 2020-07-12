@@ -1,0 +1,26 @@
+{
+    sequence: [
+        {
+            set_speed : {
+                speedMultiplier: 0.4
+            }
+        },
+        {
+            loop: {
+                child: {
+                    sequence: [
+
+                        find_path,
+                        {
+                            move_along_path: {
+                                child: {
+                                    move_to: {}
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

@@ -16,5 +16,11 @@
         "loop" : true,
         "scale" : [1, 1, 1]
     },
+    "MinionMove": {
+
+        },
+    "Behavior" : {
+            "tree": "TutorialPathfinding:basicPathfinding"
+        },
     "Network" : {}
 }

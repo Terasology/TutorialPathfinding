@@ -7,6 +7,9 @@
     "InteractionScreen" : {
             "screen" : "TutorialPathfinding:spawnEntityScreen"
         },
+        "location": {
+
+          },
      "PathfindingSpawner" : { },
 
      "alwaysRelevant" : true

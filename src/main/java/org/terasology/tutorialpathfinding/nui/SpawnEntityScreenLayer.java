@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
+import org.terasology.entitySystem.entity.internal.EntityScope;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.logic.location.LocationComponent;
@@ -53,22 +54,21 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
 
         baseGoeey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
 
+        setPrefab(baseGoeey);
+
 
         spawnCritter1.subscribe(button -> {
+            if(spawnerEntity.exists()==false){
+                logger.error("inside subscribe doesnt exist");
+            }
             setPrefab(baseGoeey);
         });
 
     }
 
     private void setPrefab(Prefab prefabToSpawn) {
-        LocationComponent spawnerComponent = spawnerEntity.getComponent(LocationComponent.class);
-        if (spawnerEntity == null) {
-            logger.error("Spawner entity is null for some reason");
-        } else {
-            logger.error(spawnerEntity.toFullDescription());
 
-        }
-
+        logger.error(localPlayer.toString());
         // spawnerComponent.prefabToSpawn = prefabToSpawn;
         logger.error("set prefab again ");
     }
@@ -79,6 +79,10 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
         for (EntityRef spawner : entityManager.getEntitiesWith(PathfindingSpawnerComponent.class,
                 LocationComponent.class)) {
             spawnerEntity = spawner;
+
+            if(spawnerEntity.exists()==false){
+                logger.error("doesnt exist in setspawnerentity ");
+            }
             logger.error(spawnerEntity.toFullDescription());
             break;
         }

@@ -1,8 +1,8 @@
 {
-    "shadowCasting" : false,
+    "shadowCasting" : true,
     "luminance" : 10,
     "hardness" : 10,
-    "penetrable" : true,
+    "penetrable" : false,
     "entity" : {
         "prefab" : "TutorialPathfinding:TutorialPathfindingSpawner"
     }
