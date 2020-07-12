@@ -1,12 +1,17 @@
 {
-    "Location" : { },
+
+
 
     "InteractionTarget" : {
         },
     "InteractionScreen" : {
             "screen" : "TutorialPathfinding:spawnEntityScreen"
         },
-     "PathfindingSpawner" : { }
+     "PathfindingSpawner" : { },
+
+     "alwaysRelevant" : true
+
+
 
 
 

@@ -9,6 +9,7 @@ import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
+import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
@@ -38,37 +39,45 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
     public void initialise() {
         logger.error("Screen spawned ");
         setSpawnerEntity();
-         UIButton spawnCritter1 = find("spawnCritter1", UIButton.class);
+        UIButton spawnCritter1 = find("spawnCritter1", UIButton.class);
         UIButton spawnCritter2 = find("spawnCritter2", UIButton.class);
         UIButton spawnCritter3 = find("spawnCritter3", UIButton.class);
 
-         UILabel spawnCritter1label = find("labelCritter1", UILabel.class);
-         UILabel spawnCritter2label = find("labelCritter2", UILabel.class);
-         UILabel spawnCritter3label = find("labelCritter3", UILabel.class);
+        UILabel spawnCritter1label = find("labelCritter1", UILabel.class);
+        UILabel spawnCritter2label = find("labelCritter2", UILabel.class);
+        UILabel spawnCritter3label = find("labelCritter3", UILabel.class);
 
-         populateUiLabels(spawnCritter1label);
+        populateUiLabels(spawnCritter1label);
         populateUiLabels(spawnCritter2label);
         populateUiLabels(spawnCritter3label);
 
         baseGoeey = entityManager.getPrefabManager().getPrefab("TutorialPathfinding:baseGooey");
 
 
-         spawnCritter1.subscribe(button -> {
+        spawnCritter1.subscribe(button -> {
             setPrefab(baseGoeey);
         });
 
     }
 
     private void setPrefab(Prefab prefabToSpawn) {
-        PathfindingSpawnerComponent spawnerComponent = spawnerEntity.getComponent(PathfindingSpawnerComponent.class);
-        logger.error(spawnerComponent.toString());
-        spawnerComponent.prefabToSpawn = prefabToSpawn;
+        LocationComponent spawnerComponent = spawnerEntity.getComponent(LocationComponent.class);
+        if (spawnerEntity == null) {
+            logger.error("Spawner entity is null for some reason");
+        } else {
+            logger.error(spawnerEntity.toFullDescription());
+
+        }
+
+        // spawnerComponent.prefabToSpawn = prefabToSpawn;
         logger.error("set prefab again ");
     }
-//
+
+    //
     private void setSpawnerEntity() {
         logger.error("entered setSpawnerEntity asdlfk");
-        for (EntityRef spawner : entityManager.getEntitiesWith(PathfindingSpawnerComponent.class)) {
+        for (EntityRef spawner : entityManager.getEntitiesWith(PathfindingSpawnerComponent.class,
+                LocationComponent.class)) {
             spawnerEntity = spawner;
             logger.error(spawnerEntity.toFullDescription());
             break;
@@ -81,8 +90,6 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
         StringBuilder text = new StringBuilder("Spawns entity");
 
         //TODO make labels more descriptive
-
-
 
 
         label.setText(text.toString());
