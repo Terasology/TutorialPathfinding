@@ -141,9 +141,17 @@ public class SpawnSystem extends BaseComponentSystem {
         EntityRef newCharacter = entityManager.create(prefab, spawnPosition);
 
         MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
+        Vector3f tempVector = new Vector3f();
         minionMoveComponent.target = JomlUtil.from(targetPostion);
-
         newCharacter.addOrSaveComponent(minionMoveComponent);
+
+//        LocationComponent locationComponent = new LocationComponent();
+//        locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));
+//        newCharacter.addOrSaveComponent(locationComponent);
+
+
+
+
 
 
 
