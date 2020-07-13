@@ -145,9 +145,9 @@ public class SpawnSystem extends BaseComponentSystem {
         minionMoveComponent.target = JomlUtil.from(targetPostion);
         newCharacter.addOrSaveComponent(minionMoveComponent);
 
-//        LocationComponent locationComponent = new LocationComponent();
-//        locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));
-//        newCharacter.addOrSaveComponent(locationComponent);
+        LocationComponent locationComponent = new LocationComponent();
+        locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));
+        newCharacter.addComponent(locationComponent);
 
 
 
