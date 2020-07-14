@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -138,36 +139,17 @@ public class SpawnSystem extends BaseComponentSystem {
 
     private void spawnCharacter(Prefab prefab, Vector3f spawnPosition) {
 
-        EntityRef newCharacter = entityManager.create(prefab, spawnPosition);
+        EntityBuilder builder = entityManager.newBuilder(prefab);
 
-        MinionMoveComponent minionMoveComponent = new MinionMoveComponent();
+        MinionMoveComponent minionMoveComponent = builder.getComponent(MinionMoveComponent.class);
         Vector3f tempVector = new Vector3f();
         minionMoveComponent.target = JomlUtil.from(targetPostion);
-        newCharacter.addOrSaveComponent(minionMoveComponent);
-
-        LocationComponent locationComponent = new LocationComponent();
+        builder.saveComponent(minionMoveComponent);
+        LocationComponent locationComponent = builder.getComponent(LocationComponent.class);
         locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));
-        newCharacter.addComponent(locationComponent);
+        builder.saveComponent(locationComponent);
 
-
-
-
-
-
-
-
-        NetworkComponent networkComponent = new NetworkComponent();
-        networkComponent.replicateMode = NetworkComponent.ReplicateMode.ALWAYS;
-        newCharacter.addComponent(networkComponent);
-        BoxShapeComponent boxShape = new BoxShapeComponent();
-        boxShape.extents = new org.terasology.math.geom.Vector3f(1, 1, 1);
-
-        RigidBodyComponent rigidBody = newCharacter.getComponent(RigidBodyComponent.class);
-        rigidBody.collidesWith = Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT,
-                StandardCollisionGroup.CHARACTER, StandardCollisionGroup.WORLD);
-
-        newCharacter.addOrSaveComponent(boxShape);
-        newCharacter.saveComponent(rigidBody);
+        EntityRef newChar = builder.build();
 
 
     }
