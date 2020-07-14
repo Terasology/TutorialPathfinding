@@ -2,7 +2,7 @@
     sequence: [
         {
             set_speed : {
-                speedMultiplier: 0.4
+                speedMultiplier: 2
             }
         },
         {
