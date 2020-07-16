@@ -1,0 +1,9 @@
+{
+    "parent" : "engine:iconItem",
+    "Item" : {
+        "name" : "Path End",
+        "icon" : "engine:items#buildBlockJob",
+		"usage" : "ON_BLOCK"
+    },
+    "PathEnd" : { }
+}

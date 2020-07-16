@@ -94,7 +94,7 @@ public class SpawnSystem extends BaseComponentSystem {
         Block newBlock = event.getNewType();
         Block spawner = blockManager.getBlock("TutorialPathfinding:spawner");
         Block target = blockManager.getBlock("TutorialPathfinding:target");
-        logger.error((spawner.toString()));
+
 
         if (spawner.equals(newBlock)) {
             logger.error("spawner placed");

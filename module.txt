@@ -9,7 +9,8 @@
     { "id": "CoreAssets", "minVersion": "2.0.1" },
     { "id": "CoreRendering", "minVersion": "1.0.0" },
     { "id": "Inventory", "minVersion": "1.1.0" },
-    { "id": "Behaviors", "minVersion": "1.0.0" }
+    { "id": "Behaviors", "minVersion": "1.0.0" },
+    { "id": "Pathfinding", "minVersion": "1.0.0" }
 
     ],
     "serverSideOnly" : false,

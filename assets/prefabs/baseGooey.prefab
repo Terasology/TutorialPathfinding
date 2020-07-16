@@ -36,6 +36,5 @@
         },
     "Behavior" : {
             "tree": "TutorialPathfinding:basicPathfinding"
-        },
-    "Network" : {}
+        }
 }
