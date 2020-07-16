@@ -15,10 +15,12 @@ import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.InventoryManager;
+import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
@@ -79,28 +81,33 @@ public class PathTestingSystem extends BaseComponentSystem {
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:startPath"));
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:endPath"));
 
+
     }
 
     @ReceiveEvent(components = {PathStartComponent.class})
     public void startPath(ActivateEvent event, EntityRef entityRef) {
         //logger.error("path start at {}",event.getHitPosition().toString());
-        logger.error("path start at {}",event.getInstigatorLocation().toString());
+        logger.error("path start at {}", event.getInstigatorLocation().toString());
         startPathPosition = (event.getInstigatorLocation());
+
+        Floor currentFloor = pathfinderSystem.getBlock(event.getInstigatorLocation()).floor;
+        logger.error(currentFloor.getMap().toString());
+
 
     }
 
     @ReceiveEvent(components = {PathEndComponent.class})
     public void endPath(ActivateEvent event, EntityRef entityRef) {
-       // logger.error(entityRef.toFullDescription());
-        logger.error("path end at {}",event.getInstigatorLocation().toString());
+        // logger.error(entityRef.toFullDescription());
+        logger.error("path end at {}", event.getInstigatorLocation().toString());
         logger.error("path start at {}", (startPathPosition).toString());
 
-        if(pathfinderSystem == null){
+        if (pathfinderSystem == null) {
             setup();
             logger.error("Pathfinder system is null here");
         }
 
-        if(pathfinderSystem== null){
+        if (pathfinderSystem == null) {
             logger.error("pathfinder is null again");
         }
 
@@ -110,25 +117,24 @@ public class PathTestingSystem extends BaseComponentSystem {
         WalkableBlock endWalkableBlock = pathfinderSystem.getBlock(event.getInstigatorLocation());
         logger.error("End block {}", endWalkableBlock.toString());
 
-                Pathfinder pathfinder = new Pathfinder(navGraphSystem, new LineOfSight2d());
+        Pathfinder pathfinder = new Pathfinder(navGraphSystem, new LineOfSight2d());
 
-         Path path = pathfinder.findPath(endWalkableBlock, startwalkableBlock);
+        Path path = pathfinder.findPath(endWalkableBlock, startwalkableBlock);
 
         ArrayList<WalkableBlock> nodes = path.getNodes();
         ArrayList<Vector3i> pathBlockPositions = new ArrayList<>();
 
 
-
-        for(WalkableBlock pathBlock: nodes){
-               Vector3i pathBlockPos = pathBlock.getBlockPosition();
-               pathBlockPositions.add(pathBlockPos);
+        for (WalkableBlock pathBlock : nodes) {
+            Vector3i pathBlockPos = pathBlock.getBlockPosition();
+            pathBlockPositions.add(pathBlockPos);
 
 
         }
         //pathBlockPositions.add(endWalkableBlock.getBlockPosition());
-        pathBlockPositions.add(0,endWalkableBlock.getBlockPosition());
+        pathBlockPositions.add(0, endWalkableBlock.getBlockPosition());
 
-        for(Vector3i pos: pathBlockPositions){
+        for (Vector3i pos : pathBlockPositions) {
             logger.error("Block at {} ", pos.toString());
         }
         event.getInstigator().send(new HighlightPathEvent(pathBlockPositions));
@@ -136,11 +142,7 @@ public class PathTestingSystem extends BaseComponentSystem {
         //logger.error(path.toString());
 
 
-
-
-
     }
 
 
-
-    }
+}
