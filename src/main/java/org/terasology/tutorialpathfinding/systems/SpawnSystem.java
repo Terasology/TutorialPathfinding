@@ -3,7 +3,6 @@
 
 package org.terasology.tutorialpathfinding.systems;
 
-import com.google.common.collect.Lists;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
@@ -22,15 +21,8 @@ import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.JomlUtil;
 import org.terasology.minion.move.MinionMoveComponent;
-import org.terasology.minion.move.MinionMoveSystem;
-import org.terasology.network.NetworkComponent;
-import org.terasology.physics.CollisionGroup;
-import org.terasology.physics.StandardCollisionGroup;
-import org.terasology.physics.components.RigidBodyComponent;
-import org.terasology.physics.components.shapes.BoxShapeComponent;
 import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.components.SpawnEntityComponent;
-import org.terasology.tutorialpathfinding.components.PathfindingSpawnerComponent;
 import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 import org.terasology.world.OnChangedBlock;
 import org.terasology.world.block.Block;
@@ -38,7 +30,6 @@ import org.terasology.world.block.BlockManager;
 import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RegisterSystem
 public class SpawnSystem extends BaseComponentSystem {
