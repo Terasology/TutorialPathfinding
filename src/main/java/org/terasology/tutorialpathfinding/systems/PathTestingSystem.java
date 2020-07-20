@@ -6,16 +6,13 @@ package org.terasology.tutorialpathfinding.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Vector3f;
@@ -31,11 +28,10 @@ import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.components.PathEndComponent;
 import org.terasology.tutorialpathfinding.components.PathStartComponent;
-import org.terasology.tutorialpathfinding.events.HighlightPathEvent;
+import org.terasology.tutorialpathfinding.PathHighlighting.HighlightPathEvent;
 import org.terasology.world.block.BlockManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RegisterSystem
 public class PathTestingSystem extends BaseComponentSystem {
@@ -84,22 +80,38 @@ public class PathTestingSystem extends BaseComponentSystem {
 
     }
 
+    /**
+     * Called when you activate Item 1
+     * @param event
+     * @param entityRef
+     */
+
     @ReceiveEvent(components = {PathStartComponent.class})
     public void startPath(ActivateEvent event, EntityRef entityRef) {
-        //logger.error("path start at {}",event.getHitPosition().toString());
+
+        //code goes here.
+
         logger.error("path start at {}", event.getInstigatorLocation().toString());
         startPathPosition = (event.getInstigatorLocation());
 
-        Floor currentFloor = pathfinderSystem.getBlock(event.getInstigatorLocation()).floor;
-        logger.error(currentFloor.getMap().toString());
+//        Floor currentFloor = pathfinderSystem.getBlock(event.getInstigatorLocation()).floor;
+//        logger.error(currentFloor.getMap().toString());
+        //logger.error("path start at {}",event.getHitPosition().toString());
 
 
     }
 
+    /**
+     * Called when you activate item 2
+     * @param event
+     * @param entityRef
+     */
+
     @ReceiveEvent(components = {PathEndComponent.class})
     public void endPath(ActivateEvent event, EntityRef entityRef) {
         // logger.error(entityRef.toFullDescription());
-        logger.error("path end at {}", event.getInstigatorLocation().toString());
+        Vector3f endPathPosition = event.getInstigatorLocation();
+        logger.error("path end at {}", (endPathPosition).toString());
         logger.error("path start at {}", (startPathPosition).toString());
 
         if (pathfinderSystem == null) {
@@ -111,35 +123,57 @@ public class PathTestingSystem extends BaseComponentSystem {
             logger.error("pathfinder is null again");
         }
 
-        WalkableBlock startwalkableBlock = pathfinderSystem.getBlock(startPathPosition);
+        //code goes here
 
-        logger.error("Start block {}", startwalkableBlock.toString());
-        WalkableBlock endWalkableBlock = pathfinderSystem.getBlock(event.getInstigatorLocation());
-        logger.error("End block {}", endWalkableBlock.toString());
 
-        Pathfinder pathfinder = new Pathfinder(navGraphSystem, new LineOfSight2d());
 
-        Path path = pathfinder.findPath(endWalkableBlock, startwalkableBlock);
 
-        ArrayList<WalkableBlock> nodes = path.getNodes();
+//
+//        WalkableBlock startwalkableBlock = pathfinderSystem.getBlock(startPathPosition);
+//
+//        logger.error("Start block {}", startwalkableBlock.toString());
+//        WalkableBlock endWalkableBlock = pathfinderSystem.getBlock(endPathPosition);
+//        logger.error("End block {}", endWalkableBlock.toString());
+//        ArrayList<Vector3i> pathBlockPositions
+//        Pathfinder pathfinder = new Pathfinder(navGraphSystem, new LineOfSight2d());
+//
+//        Path path = pathfinder.findPath(endWalkableBlock, startwalkableBlock);
+//
+//        ArrayList<WalkableBlock> nodes = path.getNodes();
+//
+//        ArrayList<Vector3i> pathBlockPositions = new ArrayList<>();
+//
+//
+//        for (WalkableBlock pathBlock : nodes) {
+//            Vector3i pathBlockPos = pathBlock.getBlockPosition();
+//            pathBlockPositions.add(pathBlockPos);
+//
+//
+//        }
+//        //pathBlockPositions.add(endWalkableBlock.getBlockPosition());
+//        pathBlockPositions.add(0, endWalkableBlock.getBlockPosition());
+//
+//        for (Vector3i pos : pathBlockPositions) {
+//            logger.error("Block at {} ", pos.toString());
+//        }
+//        event.getInstigator().send(new HighlightPathEvent(pathBlockPositions));
+//
+//        //logger.error(path.toString());
+
+
+    }
+
+    private ArrayList<Vector3i> convertPathToVectors(Path path){
+
         ArrayList<Vector3i> pathBlockPositions = new ArrayList<>();
-
-
+        ArrayList<WalkableBlock> nodes = path.getNodes();
         for (WalkableBlock pathBlock : nodes) {
             Vector3i pathBlockPos = pathBlock.getBlockPosition();
             pathBlockPositions.add(pathBlockPos);
-
-
         }
-        //pathBlockPositions.add(endWalkableBlock.getBlockPosition());
-        pathBlockPositions.add(0, endWalkableBlock.getBlockPosition());
 
-        for (Vector3i pos : pathBlockPositions) {
-            logger.error("Block at {} ", pos.toString());
-        }
-        event.getInstigator().send(new HighlightPathEvent(pathBlockPositions));
 
-        //logger.error(path.toString());
+        return pathBlockPositions;
 
 
     }

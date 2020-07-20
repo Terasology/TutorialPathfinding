@@ -141,6 +141,8 @@ public class SpawnSystem extends BaseComponentSystem {
 
         EntityBuilder builder = entityManager.newBuilder(prefab);
 
+        //code goes here
+
         MinionMoveComponent minionMoveComponent = builder.getComponent(MinionMoveComponent.class);
         Vector3f tempVector = new Vector3f();
         minionMoveComponent.target = JomlUtil.from(targetPostion);
