@@ -43,6 +43,7 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
     private BlockSelectionRenderer blueRenderer;
     private BlockSelectionRenderer redRenderer;
     private BlockSelectionRenderer greenRenderer;
+    private BlockSelectionRenderer entranceRenderer;
 
     @In
     WorldProvider worldProvider;
@@ -68,12 +69,12 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
                 Floor currentFloor = walkableBlock1.floor;
                 int currentId = currentFloor.id;
 
-                if(!namedFloors.contains(currentId)){
+                if (!namedFloors.contains(currentId)) {
                     namedFloors.add(currentId);
                     NameTagComponent nameTagComponent = new NameTagComponent();
                     nameTagComponent.text = Integer.toString(currentId);
                     nameTagComponent.yOffset = 2;
-                    nameTagComponent.scale = 2;
+                    nameTagComponent.scale = 3;
 
                     EntityBuilder builder = entityManager.newBuilder();
 
@@ -90,20 +91,29 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
                 }
                 int checkColor = currentId % 3;
 
-                if (checkColor == 0) {
-                    redRenderer.beginRenderOverlay();
-                    redRenderer.renderMark(walkableBlock1.getBlockPosition());
-                    redRenderer.endRenderOverlay();
-
-                } else if (checkColor == 1) {
-                    blueRenderer.beginRenderOverlay();
-                    blueRenderer.renderMark(walkableBlock1.getBlockPosition());
-                    blueRenderer.endRenderOverlay();
+                if (currentFloor.isEntrance(walkableBlock1)) {
+                    entranceRenderer.beginRenderOverlay();
+                    entranceRenderer.renderMark(walkableBlock1.getBlockPosition());
+                    entranceRenderer.endRenderOverlay();
                 } else {
-                    greenRenderer.beginRenderOverlay();
-                    greenRenderer.renderMark(walkableBlock1.getBlockPosition());
-                    greenRenderer.endRenderOverlay();
+                    if (checkColor == 0) {
+                        redRenderer.beginRenderOverlay();
+                        redRenderer.renderMark(walkableBlock1.getBlockPosition());
+                        redRenderer.endRenderOverlay();
+
+                    } else if (checkColor == 1) {
+                        blueRenderer.beginRenderOverlay();
+                        blueRenderer.renderMark(walkableBlock1.getBlockPosition());
+                        blueRenderer.endRenderOverlay();
+                    } else {
+                        greenRenderer.beginRenderOverlay();
+                        greenRenderer.renderMark(walkableBlock1.getBlockPosition());
+                        greenRenderer.endRenderOverlay();
+                    }
+
                 }
+
+
             }
 
 
@@ -149,6 +159,10 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
         redRenderer =
                 new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.RED.alterAlpha(35)),
                         Texture.class).get());
+        entranceRenderer =
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.BLACK.alterAlpha(150)),
+                        Texture.class).get());
+
 
         namedFloors = new ArrayList<Integer>();
 

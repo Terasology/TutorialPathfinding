@@ -26,9 +26,9 @@ import org.terasology.pathfinding.model.Path;
 import org.terasology.pathfinding.model.Pathfinder;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.tutorialpathfinding.PathHighlighting.HighlightPathEvent;
 import org.terasology.tutorialpathfinding.components.PathEndComponent;
 import org.terasology.tutorialpathfinding.components.PathStartComponent;
-import org.terasology.tutorialpathfinding.events.HighlightPathEvent;
 import org.terasology.world.block.BlockManager;
 
 import java.util.ArrayList;

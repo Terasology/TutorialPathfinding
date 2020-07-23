@@ -9,10 +9,15 @@ import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
+import org.terasology.entitySystem.systems.RenderSystem;
 import org.terasology.math.JomlUtil;
 import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
-import org.terasology.tutorialpathfinding.events.HighlightPathEvent;
+import org.terasology.rendering.assets.texture.Texture;
+import org.terasology.rendering.assets.texture.TextureUtil;
+import org.terasology.rendering.nui.Color;
+import org.terasology.rendering.world.selection.BlockSelectionRenderer;
+import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
@@ -22,13 +27,21 @@ import java.util.ArrayList;
 import static org.joml.Math.abs;
 
 @RegisterSystem
-public class PathHighlightingSystem extends BaseComponentSystem {
+public class PathHighlightingSystem extends BaseComponentSystem implements RenderSystem {
 
     Logger logger = LoggerFactory.getLogger(PathHighlightingSystem.class);
+
     @In
     private BlockManager blockManager;
     @In
     private WorldProvider worldProvider;
+
+    private boolean pathsChanged;
+
+    BlockSelectionRenderer pathRenderer;
+
+    ArrayList<Vector3i> connectedPath;
+
 
     @ReceiveEvent
     public void highlightblock(HighlightPathEvent event, EntityRef entityRef) {
@@ -38,17 +51,17 @@ public class PathHighlightingSystem extends BaseComponentSystem {
     public void highlightBlocks(ArrayList<Vector3i> blocks) {
         Block pathBlock = blockManager.getBlock("coreassets:Plank");
 
-        ArrayList<Vector3i> connectedPath = connectDisconnectedPaths(blocks);
+        connectedPath = connectDisconnectedPaths(blocks);
+        pathsChanged = true;
 
-        for (Vector3i blockPos : connectedPath) {
-            worldProvider.setBlock(JomlUtil.from(blockPos), pathBlock);
-        }
+//        for (Vector3i blockPos : connectedPath) {
+//            worldProvider.setBlock(JomlUtil.from(blockPos), pathBlock);
+//        }
 
     }
 
     public ArrayList<Vector3i> connectDisconnectedPaths(ArrayList<Vector3i> blocks) {
-        ArrayList<Vector3i> connectedPath = new ArrayList<>();
-
+        ArrayList<Vector3i> connectedPath1 = new ArrayList<>();
 
 
         logger.error("Connected nodes are ");
@@ -61,12 +74,12 @@ public class PathHighlightingSystem extends BaseComponentSystem {
             logger.error("Connecting {} to {} ", previousBlock.toString(), currentBlock.toString());
             ArrayList<Vector3i> connectedNodes = connectNodes(previousBlock, currentBlock);
             //logger.error(connectedNodes.toString());
-            connectedPath.addAll(connectedNodes);
+            connectedPath1.addAll(connectedNodes);
 
         }
 
 
-        return connectedPath;
+        return connectedPath1;
     }
 
     /**
@@ -113,5 +126,47 @@ public class PathHighlightingSystem extends BaseComponentSystem {
 
     }
 
+    @Override
+    public void postBegin() {
+        super.postBegin();
+        pathRenderer =
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.MAGENTA.alterAlpha(55)),
+                        Texture.class).get());
+        pathsChanged = false;
 
+    }
+
+    @Override
+    public void renderOpaque() {
+
+    }
+
+    @Override
+    public void renderAlphaBlend() {
+
+        pathRenderer.beginRenderOverlay();
+        if (pathsChanged) {
+
+            for (Vector3i pos : connectedPath) {
+                pathRenderer.renderMark(pos);
+
+            }
+
+        }
+
+
+        pathRenderer.endRenderOverlay();
+
+
+    }
+
+    @Override
+    public void renderOverlay() {
+
+    }
+
+    @Override
+    public void renderShadows() {
+
+    }
 }
