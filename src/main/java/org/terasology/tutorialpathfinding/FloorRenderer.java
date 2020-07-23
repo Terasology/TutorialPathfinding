@@ -5,10 +5,18 @@ package org.terasology.tutorialpathfinding;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.entitySystem.entity.EntityBuilder;
+import org.terasology.entitySystem.entity.EntityManager;
+import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.RenderSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.logic.location.LocationComponent;
+import org.terasology.logic.nameTags.NameTagComponent;
+import org.terasology.math.JomlUtil;
+import org.terasology.math.geom.Vector3f;
 import org.terasology.math.geom.Vector3i;
+import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphChunk;
 import org.terasology.navgraph.WalkableBlock;
@@ -21,11 +29,16 @@ import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RegisterSystem
 public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
 
     Logger logger = LoggerFactory.getLogger(FloorRenderer.class);
-    boolean[][][] counted = new boolean[16][32][16];
+
+    private ArrayList<Integer> namedFloors;
+
 
     private BlockSelectionRenderer blueRenderer;
     private BlockSelectionRenderer redRenderer;
@@ -35,6 +48,8 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
     WorldProvider worldProvider;
     @In
     PathfinderSystem pathfinderSystem;
+    @In
+    EntityManager entityManager;
 
     @Override
     public void renderOpaque() {
@@ -52,6 +67,27 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
             for (WalkableBlock walkableBlock1 : navGraphChunk.walkableBlocks) {
                 Floor currentFloor = walkableBlock1.floor;
                 int currentId = currentFloor.id;
+
+                if(!namedFloors.contains(currentId)){
+                    namedFloors.add(currentId);
+                    NameTagComponent nameTagComponent = new NameTagComponent();
+                    nameTagComponent.text = Integer.toString(currentId);
+                    nameTagComponent.yOffset = 2;
+                    nameTagComponent.scale = 2;
+
+                    EntityBuilder builder = entityManager.newBuilder();
+
+
+                    builder.addComponent(nameTagComponent);
+                    LocationComponent locationComponent = new LocationComponent();
+                    Vector3f blockPos = walkableBlock1.getBlockPosition().toVector3f();
+                    locationComponent.setWorldPosition(blockPos);
+                    builder.addComponent(locationComponent);
+
+                    EntityRef newFloor = builder.build();
+
+
+                }
                 int checkColor = currentId % 3;
 
                 if (checkColor == 0) {
@@ -69,6 +105,8 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
                     greenRenderer.endRenderOverlay();
                 }
             }
+
+
         }
 
 
@@ -111,6 +149,8 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
         redRenderer =
                 new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.RED.alterAlpha(35)),
                         Texture.class).get());
+
+        namedFloors = new ArrayList<Integer>();
 
     }
 
