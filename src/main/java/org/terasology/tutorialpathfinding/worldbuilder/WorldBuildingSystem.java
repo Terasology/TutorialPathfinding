@@ -4,6 +4,8 @@
 package org.terasology.tutorialpathfinding.worldbuilder;
 
 import org.joml.Vector3i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
@@ -32,6 +34,8 @@ public class WorldBuildingSystem extends BaseComponentSystem {
     @In
     private EntityManager entityManager;
 
+    private final Logger logger = LoggerFactory.getLogger(WorldBuildingSystem.class);
+
     Block ground;
     Block air;
 
@@ -39,15 +43,24 @@ public class WorldBuildingSystem extends BaseComponentSystem {
 
     private int level = 0;
 
+    private EntityRef tempTaskEntity;
+
     @ReceiveEvent
     public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player) {
         ground = blockManager.getBlock("CoreAssets:Plank");
         air = blockManager.getBlock("engine:air");
 
         String[] test = new String[10];
-        for (int i = 0; i < 10; i++) {
-            test[i] = "1121111111";
-        }
+        test[0] = "1131131111";
+        test[1] = "1131131111";
+        test[2] = "1113113111";
+        test[3] = "1113113111";
+        test[4] = "1111311311";
+        test[5] = "1131131111";
+        test[6] = "1131131111";
+        test[7] = "1131131111";
+        test[8] = "1131131111";
+        test[9] = "1131131111";
 
         setLevel(1);
         createFromText(test, new Vector3i(0, SURFACE_HEIGHT, 0));
@@ -55,11 +68,13 @@ public class WorldBuildingSystem extends BaseComponentSystem {
         BlockSelectionComponent blockSelectionComponent = new BlockSelectionComponent();
         blockSelectionComponent.shouldRender = true;
         blockSelectionComponent.currentSelection =
-                Region3i.createFromMinAndSize(new org.terasology.math.geom.Vector3i(0, 10, 0),
-                        new org.terasology.math.geom.Vector3i(1, 2, 3));
+                Region3i.createFromMinAndSize(new org.terasology.math.geom.Vector3i(0, 15, 0),
+                        new org.terasology.math.geom.Vector3i(5, 2, 3));
         blockSelectionComponent.texture = Assets.get(TextureUtil.getTextureUriForColor(Color.BLUE.alterAlpha(100)),
                 Texture.class).get();
-        EntityRef tempTaskEntity = entityManager.create(blockSelectionComponent);
+        tempTaskEntity = entityManager.create(blockSelectionComponent);
+        logger.error("TempTask entity is : {}", tempTaskEntity.toFullDescription());
+        tempTaskEntity.destroy();
 
 
     }
