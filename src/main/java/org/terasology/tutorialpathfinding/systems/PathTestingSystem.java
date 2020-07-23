@@ -6,16 +6,13 @@ package org.terasology.tutorialpathfinding.systems;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.common.ActivateEvent;
 import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.terasology.math.geom.Vector3f;
@@ -35,7 +32,6 @@ import org.terasology.tutorialpathfinding.events.HighlightPathEvent;
 import org.terasology.world.block.BlockManager;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RegisterSystem
 public class PathTestingSystem extends BaseComponentSystem {

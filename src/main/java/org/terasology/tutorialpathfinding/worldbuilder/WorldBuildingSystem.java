@@ -4,15 +4,22 @@
 package org.terasology.tutorialpathfinding.worldbuilder;
 
 import org.joml.Vector3i;
+import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
 import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.math.Region3i;
 import org.terasology.registry.In;
+import org.terasology.rendering.assets.texture.Texture;
+import org.terasology.rendering.assets.texture.TextureUtil;
+import org.terasology.rendering.nui.Color;
+import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.selection.BlockSelectionComponent;
 
 
 @RegisterSystem
@@ -22,6 +29,8 @@ public class WorldBuildingSystem extends BaseComponentSystem {
     private BlockManager blockManager;
     @In
     private WorldProvider worldProvider;
+    @In
+    private EntityManager entityManager;
 
     Block ground;
     Block air;
@@ -42,8 +51,15 @@ public class WorldBuildingSystem extends BaseComponentSystem {
 
         setLevel(1);
         createFromText(test, new Vector3i(0, SURFACE_HEIGHT, 0));
-        setLevel(5);
-        createFromText(test, new Vector3i(4, SURFACE_HEIGHT, 9));
+
+        BlockSelectionComponent blockSelectionComponent = new BlockSelectionComponent();
+        blockSelectionComponent.shouldRender = true;
+        blockSelectionComponent.currentSelection =
+                Region3i.createFromMinAndSize(new org.terasology.math.geom.Vector3i(0, 10, 0),
+                        new org.terasology.math.geom.Vector3i(1, 2, 3));
+        blockSelectionComponent.texture = Assets.get(TextureUtil.getTextureUriForColor(Color.BLUE.alterAlpha(100)),
+                Texture.class).get();
+        EntityRef tempTaskEntity = entityManager.create(blockSelectionComponent);
 
 
     }
