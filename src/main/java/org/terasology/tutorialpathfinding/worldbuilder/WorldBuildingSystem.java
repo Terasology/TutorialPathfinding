@@ -51,18 +51,20 @@ public class WorldBuildingSystem extends BaseComponentSystem {
         air = blockManager.getBlock("engine:air");
 
         String[] test = new String[10];
-        test[0] = "1131131111";
-        test[1] = "1131131111";
-        test[2] = "1113113111";
-        test[3] = "1113113111";
-        test[4] = "1111311311";
-        test[5] = "1131131111";
-        test[6] = "1131131111";
-        test[7] = "1131131111";
-        test[8] = "1131131111";
-        test[9] = "1131131111";
+        test[0] = "1151151115";
+        test[1] = "1151151115";
+        test[2] = "1115115115";
+        test[3] = "1115115115";
+        test[4] = "1111511515";
+        test[5] = "1151151115";
+        test[6] = "1151151115";
+        test[7] = "1151151115";
+        test[8] = "1151151115";
+        test[9] = "1151151115";
 
         setLevel(1);
+        createFromText(test, new Vector3i(0, SURFACE_HEIGHT, 0));
+        setLevel(6);
         createFromText(test, new Vector3i(0, SURFACE_HEIGHT, 0));
 
         BlockSelectionComponent blockSelectionComponent = new BlockSelectionComponent();

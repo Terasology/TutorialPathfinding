@@ -73,8 +73,8 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
                     namedFloors.add(currentId);
                     NameTagComponent nameTagComponent = new NameTagComponent();
                     nameTagComponent.text = Integer.toString(currentId);
-                    nameTagComponent.yOffset = 2;
-                    nameTagComponent.scale = 3;
+                    nameTagComponent.yOffset = 3;
+                    nameTagComponent.scale = 7;
 
                     EntityBuilder builder = entityManager.newBuilder();
 
