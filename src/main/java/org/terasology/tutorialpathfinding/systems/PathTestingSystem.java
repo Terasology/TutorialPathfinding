@@ -26,6 +26,7 @@ import org.terasology.pathfinding.model.Path;
 import org.terasology.pathfinding.model.Pathfinder;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
+import org.terasology.tutorialpathfinding.PathHighlighting.HighlightBlockEvent;
 import org.terasology.tutorialpathfinding.PathHighlighting.HighlightPathEvent;
 import org.terasology.tutorialpathfinding.components.FindBlockTesterComponent;
 import org.terasology.tutorialpathfinding.components.PathEndComponent;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 @RegisterSystem
 public class PathTestingSystem extends BaseComponentSystem {
 
-    Logger logger = LoggerFactory.getLogger(SpawnSystem.class);
+    Logger logger = LoggerFactory.getLogger(PathTestingSystem.class);
 
     @In
     private EntityManager entityManager;
@@ -102,13 +103,17 @@ public class PathTestingSystem extends BaseComponentSystem {
         Vector3f playerPos = (event.getInstigatorLocation());
 
         WalkableBlock result = pathfinderSystem.getBlock(event.getInstigator());
+        if (result == null) {
+            logger.error("result is null");
+        } else {
+            logger.error(result.toString());
+        }
 
-        ArrayList<Vector3i> blockToBeHighlighted = new ArrayList();
-        blockToBeHighlighted.add(result.getBlockPosition());
+        Vector3i blockToBeHighlighted = result.getBlockPosition();
 
-        HighlightPathEvent highlightPathEvent= new HighlightPathEvent(blockToBeHighlighted);
+        HighlightBlockEvent highlightBlockEvent = new HighlightBlockEvent(blockToBeHighlighted);
 
-
+        event.getInstigator().send(highlightBlockEvent);
 
 
     }

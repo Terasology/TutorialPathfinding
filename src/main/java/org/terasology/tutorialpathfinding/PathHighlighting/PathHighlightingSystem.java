@@ -41,11 +41,16 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
     BlockSelectionRenderer pathRenderer;
 
     ArrayList<Vector3i> connectedPath;
+    Vector3i blockPos;
 
 
     @ReceiveEvent
-    public void highlightblock(HighlightPathEvent event, EntityRef entityRef) {
+    public void highlightblocks(HighlightPathEvent event, EntityRef entityRef) {
         highlightBlocks(event.getBlockPositions());
+    }
+    @ReceiveEvent
+    public void highlightblock(HighlightBlockEvent event, EntityRef entityRef) {
+        highlightBlock(event.getBlockPosition());
     }
 
     public void highlightBlocks(ArrayList<Vector3i> blocks) {
@@ -57,6 +62,12 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
 //        for (Vector3i blockPos : connectedPath) {
 //            worldProvider.setBlock(JomlUtil.from(blockPos), pathBlock);
 //        }
+
+    }
+
+    public void highlightBlock(Vector3i blockPosition){
+
+        this.blockPos = blockPosition;
 
     }
 
@@ -153,6 +164,11 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
             }
 
         }
+
+        if(blockPos!=null) {
+            pathRenderer.renderMark(blockPos);
+        }
+
 
 
         pathRenderer.endRenderOverlay();
