@@ -27,8 +27,10 @@ import org.terasology.pathfinding.model.Pathfinder;
 import org.terasology.registry.CoreRegistry;
 import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.PathHighlighting.HighlightPathEvent;
+import org.terasology.tutorialpathfinding.components.FindBlockTesterComponent;
 import org.terasology.tutorialpathfinding.components.PathEndComponent;
 import org.terasology.tutorialpathfinding.components.PathStartComponent;
+import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
 
 import java.util.ArrayList;
@@ -76,6 +78,7 @@ public class PathTestingSystem extends BaseComponentSystem {
 
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:startPath"));
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:endPath"));
+        inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:findBlockTester"));
 
 
     }
@@ -88,6 +91,24 @@ public class PathTestingSystem extends BaseComponentSystem {
 
         Floor currentFloor = pathfinderSystem.getBlock(event.getInstigatorLocation()).floor;
         logger.error(currentFloor.getMap().toString());
+
+
+    }
+
+    @ReceiveEvent(components = {FindBlockTesterComponent.class})
+    public void findBlockUnder(ActivateEvent event, EntityRef entityRef) {
+        //logger.error("path start at {}",event.getHitPosition().toString());
+
+        Vector3f playerPos = (event.getInstigatorLocation());
+
+        WalkableBlock result = pathfinderSystem.getBlock(event.getInstigator());
+
+        ArrayList<Vector3i> blockToBeHighlighted = new ArrayList();
+        blockToBeHighlighted.add(result.getBlockPosition());
+
+        HighlightPathEvent highlightPathEvent= new HighlightPathEvent(blockToBeHighlighted);
+
+
 
 
     }
