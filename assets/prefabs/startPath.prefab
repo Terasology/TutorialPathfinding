@@ -2,7 +2,7 @@
     "parent" : "engine:iconItem",
     "Item" : {
         "name" : "Path Start",
-        "icon" : "engine:items#buildBlockJob",
+        "icon" : "engine:items#greenFluff",
 		"usage" : "ON_BLOCK"
     },
     "PathStart" : { }

@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -55,6 +56,8 @@ public class SpawnSystem extends BaseComponentSystem {
 
     Prefab baseGooey;
 
+    private EntityRef targetEntity;
+
     @Override
     public void postBegin() {
         super.postBegin();
@@ -68,16 +71,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
 
 
-        BlockItemFactory blockFactory = new BlockItemFactory(entityManager);
-        EntityRef planks = blockFactory.newInstance(blockManager.getBlockFamily("coreassets:Plank"), 99);
-        inventoryManager.giveItem(player, player, planks);
-        inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:spawnEntitiesItem"));
 
-        inventoryManager.giveItem(player, player, blockFactory.newInstance(blockManager.getBlockFamily(
-                "TutorialPathfinding:spawner"), 2));
-
-        inventoryManager.giveItem(player, player, blockFactory.newInstance(blockManager.getBlockFamily(
-                "TutorialPathfinding:target"), 2));
 
     }
 
@@ -94,6 +88,7 @@ public class SpawnSystem extends BaseComponentSystem {
         }
         if(target.equals(newBlock)){
             targetPostion = new Vector3f(JomlUtil.from(event.getBlockPosition()));
+
         }
 
 
@@ -106,9 +101,10 @@ public class SpawnSystem extends BaseComponentSystem {
         logger.error("item activated ");
         for (Vector3i spawnerPos : spawnerPositions) {
 
-            spawnerPos.add(0, 2, 0);
+
 
             Vector3f floatSpawnerPos = new Vector3f(spawnerPos);
+            floatSpawnerPos.add(0, 2, 0);
 
             entityRef.send(new CharacterSpawnEvent(baseGooey, floatSpawnerPos));
 
@@ -136,6 +132,9 @@ public class SpawnSystem extends BaseComponentSystem {
         MinionMoveComponent minionMoveComponent = builder.getComponent(MinionMoveComponent.class);
         Vector3f tempVector = new Vector3f();
         minionMoveComponent.target = JomlUtil.from(targetPostion);
+        builder.saveComponent(minionMoveComponent);
+
+
         builder.saveComponent(minionMoveComponent);
         LocationComponent locationComponent = builder.getComponent(LocationComponent.class);
         locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));

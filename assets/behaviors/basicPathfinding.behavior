@@ -10,9 +10,15 @@
                 child: {
                     sequence: [
 
+                        find_path,
                         {
-                                 move_to: {}
-                         }
+                            move_along_path: {
+                                child: {
+                                    move_to: {}
+                                }
+                            }
+                        },
+                        destroy_entity
                     ]
                 }
             }

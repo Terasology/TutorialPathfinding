@@ -33,6 +33,7 @@ import org.terasology.tutorialpathfinding.components.PathEndComponent;
 import org.terasology.tutorialpathfinding.components.PathStartComponent;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 
@@ -80,6 +81,16 @@ public class PathTestingSystem extends BaseComponentSystem {
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:startPath"));
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:endPath"));
         inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:findBlockTester"));
+        BlockItemFactory blockFactory = new BlockItemFactory(entityManager);
+        EntityRef planks = blockFactory.newInstance(blockManager.getBlockFamily("coreassets:Plank"), 99);
+        inventoryManager.giveItem(player, player, planks);
+        inventoryManager.giveItem(player, player, entityManager.create("TutorialPathfinding:spawnEntitiesItem"));
+
+        inventoryManager.giveItem(player, player, blockFactory.newInstance(blockManager.getBlockFamily(
+                "TutorialPathfinding:spawner"), 2));
+
+        inventoryManager.giveItem(player, player, blockFactory.newInstance(blockManager.getBlockFamily(
+                "TutorialPathfinding:target"), 2));
 
 
     }

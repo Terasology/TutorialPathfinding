@@ -2,7 +2,7 @@
     "parent" : "engine:iconItem",
     "Item" : {
         "name" : "Path End",
-        "icon" : "engine:items#buildBlockJob",
+        "icon" : "engine:items#pinkFluff",
 		"usage" : "ON_BLOCK"
     },
     "PathEnd" : { }
