@@ -7,15 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.entity.internal.EntityScope;
 import org.terasology.entitySystem.prefab.Prefab;
 import org.terasology.entitySystem.prefab.PrefabManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.nui.widgets.UIButton;
+import org.terasology.nui.widgets.UILabel;
 import org.terasology.tutorialpathfinding.components.PathfindingSpawnerComponent;
 
 public class SpawnEntityScreenLayer extends CoreScreenLayer {
@@ -56,9 +55,8 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
 
         setPrefab(baseGoeey);
 
-
         spawnCritter1.subscribe(button -> {
-            if(spawnerEntity.exists()==false){
+            if (spawnerEntity.exists() == false) {
                 logger.error("inside subscribe doesnt exist");
             }
             setPrefab(baseGoeey);
@@ -73,14 +71,13 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
         logger.error("set prefab again ");
     }
 
-    //
     private void setSpawnerEntity() {
         logger.error("entered setSpawnerEntity asdlfk");
         for (EntityRef spawner : entityManager.getEntitiesWith(PathfindingSpawnerComponent.class,
                 LocationComponent.class)) {
             spawnerEntity = spawner;
 
-            if(spawnerEntity.exists()==false){
+            if (spawnerEntity.exists() == false) {
                 logger.error("doesnt exist in setspawnerentity ");
             }
             logger.error(spawnerEntity.toFullDescription());
@@ -88,15 +85,12 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
         }
     }
 
-
     private void populateUiLabels(UILabel label) {
 
         StringBuilder text = new StringBuilder("Spawns entity");
 
         //TODO make labels more descriptive
 
-
         label.setText(text.toString());
     }
-
 }
