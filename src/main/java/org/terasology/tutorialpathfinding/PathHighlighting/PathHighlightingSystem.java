@@ -15,7 +15,7 @@ import org.terasology.math.geom.Vector3i;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.Color;
+import org.terasology.nui.Color;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
@@ -141,7 +141,7 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
     public void postBegin() {
         super.postBegin();
         pathRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.MAGENTA.alterAlpha(55)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor( Color.MAGENTA.alterAlpha(55)),
                         Texture.class).get());
         pathsChanged = false;
 

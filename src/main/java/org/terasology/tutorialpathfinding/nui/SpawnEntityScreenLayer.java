@@ -14,8 +14,8 @@ import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.registry.In;
 import org.terasology.rendering.nui.CoreScreenLayer;
-import org.terasology.rendering.nui.widgets.UIButton;
-import org.terasology.rendering.nui.widgets.UILabel;
+import org.terasology.nui.widgets.UIButton;
+import org.terasology.nui.widgets.UILabel;
 import org.terasology.tutorialpathfinding.components.PathfindingSpawnerComponent;
 
 public class SpawnEntityScreenLayer extends CoreScreenLayer {
