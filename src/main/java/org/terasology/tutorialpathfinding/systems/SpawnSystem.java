@@ -49,7 +49,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
     private ArrayList<Vector3i> spawnerPositions = new ArrayList<Vector3i>();
 
-    private Vector3f targetPostion;
+    private Vector3f targetPosition = new Vector3f();
 
     Prefab baseGooey;
 
@@ -64,12 +64,6 @@ public class SpawnSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player) {
-
-
-
-
-
-
     }
 
     @ReceiveEvent
@@ -81,13 +75,12 @@ public class SpawnSystem extends BaseComponentSystem {
 
         if (spawner.equals(newBlock)) {
             logger.error("spawner placed");
-            spawnerPositions.add(event.getBlockPosition());
+            spawnerPositions.add(new Vector3i(event.getBlockPosition()));
         }
-        if(target.equals(newBlock)){
-            targetPostion = new Vector3f(event.getBlockPosition());
+        if (target.equals(newBlock)) {
+            targetPosition.set(event.getBlockPosition());
 
         }
-
 
 
     }
@@ -108,7 +101,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
         MinionMoveComponent minionMoveComponent = builder.getComponent(MinionMoveComponent.class);
         Vector3f tempVector = new Vector3f();
-        minionMoveComponent.target = targetPostion;
+        minionMoveComponent.target = targetPosition;
         builder.saveComponent(minionMoveComponent);
 
 

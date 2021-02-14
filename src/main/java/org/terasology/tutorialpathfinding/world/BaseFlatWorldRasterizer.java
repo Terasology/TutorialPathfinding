@@ -29,8 +29,7 @@ public class BaseFlatWorldRasterizer implements WorldRasterizer {
             float surfaceHeight = elevationFacet.getWorld(position.x(), position.z());
             if (position.y() < surfaceHeight) {
                 Vector3i chunkPos = Chunks.toRelative(position, new Vector3i());
-                org.joml.Vector3i pos = chunkPos;
-                chunk.setBlock(pos, dirt);
+                chunk.setBlock(chunkPos, dirt);
             }
         }
     }
