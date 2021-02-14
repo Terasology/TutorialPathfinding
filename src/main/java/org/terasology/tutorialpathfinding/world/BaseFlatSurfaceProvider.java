@@ -4,17 +4,16 @@
 package org.terasology.tutorialpathfinding.world;
 
 import org.joml.Vector2ic;
-import org.terasology.joml.geom.Rectanglei;
 import org.terasology.world.generation.Border3D;
 import org.terasology.world.generation.FacetProvider;
 import org.terasology.world.generation.GeneratingRegion;
 import org.terasology.world.generation.Produces;
-import org.terasology.world.generation.facets.SurfaceHeightFacet;
+import org.terasology.world.generation.facets.ElevationFacet;
 
 /**
  * Provides a flat SurfaceHeightFacet set at SURFACE_HEIGHT
  */
-@Produces(SurfaceHeightFacet.class)
+@Produces(ElevationFacet.class)
 public class BaseFlatSurfaceProvider implements FacetProvider {
     // Surface height of the flat surface
     static final int SURFACE_HEIGHT = 10;
@@ -38,18 +37,17 @@ public class BaseFlatSurfaceProvider implements FacetProvider {
     @Override
     public void process(GeneratingRegion region) {
 
-        Border3D border3D = region.getBorderForFacet(SurfaceHeightFacet.class);
-        SurfaceHeightFacet surfaceHeightFacet = new SurfaceHeightFacet(region.getRegion(), border3D);
+        Border3D border3D = region.getBorderForFacet(ElevationFacet.class);
+        ElevationFacet elevationFacet = new ElevationFacet(region.getRegion(), border3D);
 
-        Rectanglei processRegion = surfaceHeightFacet.getWorldRegion();
         // Iterating through the positions in the region to be processed and setting the value to SURFACE_HEIGHT at
         // each point
-        for (Vector2ic pos : processRegion) {
-            surfaceHeightFacet.setWorld(pos, SURFACE_HEIGHT);
+        for (Vector2ic pos : elevationFacet.getRelativeArea()) {
+            elevationFacet.setWorld(pos, SURFACE_HEIGHT);
         }
 
         // Pass our newly created and populated facet to the region
-        region.setRegionFacet(SurfaceHeightFacet.class, surfaceHeightFacet);
+        region.setRegionFacet(ElevationFacet.class, elevationFacet);
 
     }
 }
