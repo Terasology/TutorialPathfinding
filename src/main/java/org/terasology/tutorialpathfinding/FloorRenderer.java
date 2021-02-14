@@ -1,8 +1,10 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.tutorialpathfinding;
 
+import org.joml.Vector3f;
+import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityBuilder;
@@ -13,24 +15,19 @@ import org.terasology.entitySystem.systems.RenderSystem;
 import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.nameTags.NameTagComponent;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Vector3f;
-import org.terasology.math.geom.Vector3i;
-import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphChunk;
 import org.terasology.navgraph.WalkableBlock;
+import org.terasology.nui.Color;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RegisterSystem
 public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
@@ -81,7 +78,7 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
 
                     builder.addComponent(nameTagComponent);
                     LocationComponent locationComponent = new LocationComponent();
-                    Vector3f blockPos = walkableBlock1.getBlockPosition().toVector3f();
+                    Vector3f blockPos = new Vector3f(walkableBlock1.getBlockPosition());
                     locationComponent.setWorldPosition(blockPos);
                     builder.addComponent(locationComponent);
 
@@ -151,16 +148,16 @@ public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
     public void postBegin() {
 
         blueRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.BLUE.alterAlpha(35)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.blue).setAlpha(35)),
                         Texture.class).get());
         greenRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.GREEN.alterAlpha(35)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.green).setAlpha(35)),
                         Texture.class).get());
         redRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.RED.alterAlpha(35)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.red).setAlpha(35)),
                         Texture.class).get());
         entranceRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.BLACK.alterAlpha(150)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.black).setAlpha(150)),
                         Texture.class).get());
 
 

@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.tutorialpathfinding.systems;
@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.behaviors.components.FollowComponent;
 import org.terasology.entitySystem.entity.EntityBuilder;
 import org.terasology.entitySystem.entity.EntityManager;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -21,7 +20,6 @@ import org.terasology.logic.inventory.InventoryManager;
 import org.terasology.logic.location.LocationComponent;
 import org.terasology.logic.players.LocalPlayer;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.math.JomlUtil;
 import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.components.SpawnEntityComponent;
@@ -29,7 +27,6 @@ import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 import org.terasology.world.OnChangedBlock;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 
@@ -52,7 +49,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
     private ArrayList<Vector3i> spawnerPositions = new ArrayList<Vector3i>();
 
-    private Vector3f targetPostion;
+    private Vector3f targetPosition = new Vector3f();
 
     Prefab baseGooey;
 
@@ -67,12 +64,6 @@ public class SpawnSystem extends BaseComponentSystem {
 
     @ReceiveEvent
     public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player) {
-
-
-
-
-
-
     }
 
     @ReceiveEvent
@@ -84,45 +75,24 @@ public class SpawnSystem extends BaseComponentSystem {
 
         if (spawner.equals(newBlock)) {
             logger.error("spawner placed");
-            spawnerPositions.add(JomlUtil.from(event.getBlockPosition()));
+            spawnerPositions.add(new Vector3i(event.getBlockPosition()));
         }
-        if(target.equals(newBlock)){
-            targetPostion = new Vector3f(JomlUtil.from(event.getBlockPosition()));
+        if (target.equals(newBlock)) {
+            targetPosition.set(event.getBlockPosition());
 
         }
-
 
 
     }
 
     @ReceiveEvent(components = {SpawnEntityComponent.class})
     public void setTarget(ActivateEvent event, EntityRef entityRef) {
-
-        logger.error("item activated ");
         for (Vector3i spawnerPos : spawnerPositions) {
-
-
-
             Vector3f floatSpawnerPos = new Vector3f(spawnerPos);
             floatSpawnerPos.add(0, 2, 0);
 
             entityRef.send(new CharacterSpawnEvent(baseGooey, floatSpawnerPos));
-
-
-//            LocationComponent locationComponent = spawner.getComponent(LocationComponent.class);
-//            Vector3f spawnerPos = JomlUtil.from(locationComponent.getWorldPosition()) ;
-//
-//            PathfindingSpawnerComponent spawnerComponent = spawner.getComponent(PathfindingSpawnerComponent.class);
-//
-//            logger.error("found at \n {} x  {} y  {}  z\n ", spawnerPos.x , spawnerPos.y , spawnerPos.z);
-//
-//
-
         }
-
-
-
-
     }
 
     private void spawnCharacter(Prefab prefab, Vector3f spawnPosition) {
@@ -131,13 +101,13 @@ public class SpawnSystem extends BaseComponentSystem {
 
         MinionMoveComponent minionMoveComponent = builder.getComponent(MinionMoveComponent.class);
         Vector3f tempVector = new Vector3f();
-        minionMoveComponent.target = JomlUtil.from(targetPostion);
+        minionMoveComponent.target = targetPosition;
         builder.saveComponent(minionMoveComponent);
 
 
         builder.saveComponent(minionMoveComponent);
         LocationComponent locationComponent = builder.getComponent(LocationComponent.class);
-        locationComponent.setWorldPosition(JomlUtil.from(spawnPosition));
+        locationComponent.setWorldPosition(spawnPosition);
         builder.saveComponent(locationComponent);
 
         EntityRef newChar = builder.build();

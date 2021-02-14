@@ -1,8 +1,10 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.tutorialpathfinding.PathHighlighting;
 
+import org.joml.Vector3i;
+import org.joml.Vector3ic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.terasology.entitySystem.entity.EntityRef;
@@ -10,12 +12,10 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.entitySystem.systems.RenderSystem;
-import org.terasology.math.JomlUtil;
-import org.terasology.math.geom.Vector3i;
+import org.terasology.nui.Color;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.Color;
 import org.terasology.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
@@ -59,9 +59,9 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
         connectedPath = connectDisconnectedPaths(blocks);
         pathsChanged = true;
 
-//        for (Vector3i blockPos : connectedPath) {
-//            worldProvider.setBlock(JomlUtil.from(blockPos), pathBlock);
-//        }
+        for (Vector3ic pos : connectedPath) {
+            worldProvider.setBlock(pos, pathBlock);
+        }
 
     }
 
@@ -103,13 +103,13 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
 
     public ArrayList<Vector3i> connectNodes(Vector3i ptA, Vector3i ptB) {
 
-        int height = ptA.getY();
+        int height = ptA.y();
 
         ArrayList<Vector3i> connectedNodes = new ArrayList<>();
-        int x0 = ptA.getX();
-        int y0 = ptA.getZ();
-        int x1 = ptB.getX();
-        int y1 = ptB.getZ();
+        int x0 = ptA.x();
+        int y0 = ptA.z();
+        int x1 = ptB.x();
+        int y1 = ptB.z();
         int dx = abs(x1 - x0);
         int sx = x0 < x1 ? 1 : -1;
         int dy = -abs(y1 - y0);
@@ -141,7 +141,7 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
     public void postBegin() {
         super.postBegin();
         pathRenderer =
-                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(Color.MAGENTA.alterAlpha(55)),
+                new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.magenta).setAlpha(55)),
                         Texture.class).get());
         pathsChanged = false;
 

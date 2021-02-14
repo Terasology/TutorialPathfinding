@@ -1,4 +1,4 @@
-// Copyright 2020 The Terasology Foundation
+// Copyright 2021 The Terasology Foundation
 // SPDX-License-Identifier: Apache-2.0
 
 package org.terasology.tutorialpathfinding.worldbuilder;
@@ -12,15 +12,15 @@ import org.terasology.entitySystem.event.ReceiveEvent;
 import org.terasology.entitySystem.systems.BaseComponentSystem;
 import org.terasology.entitySystem.systems.RegisterSystem;
 import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.math.Region3i;
+import org.terasology.nui.Color;
 import org.terasology.registry.In;
 import org.terasology.rendering.assets.texture.Texture;
 import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.nui.Color;
 import org.terasology.utilities.Assets;
 import org.terasology.world.WorldProvider;
 import org.terasology.world.block.Block;
 import org.terasology.world.block.BlockManager;
+import org.terasology.world.block.BlockRegion;
 import org.terasology.world.selection.BlockSelectionComponent;
 
 
@@ -69,10 +69,8 @@ public class WorldBuildingSystem extends BaseComponentSystem {
 
         BlockSelectionComponent blockSelectionComponent = new BlockSelectionComponent();
         blockSelectionComponent.shouldRender = true;
-        blockSelectionComponent.currentSelection =
-                Region3i.createFromMinAndSize(new org.terasology.math.geom.Vector3i(0, 15, 0),
-                        new org.terasology.math.geom.Vector3i(5, 2, 3));
-        blockSelectionComponent.texture = Assets.get(TextureUtil.getTextureUriForColor(Color.BLUE.alterAlpha(100)),
+        blockSelectionComponent.currentSelection = new BlockRegion(0, 15, 0).setSize(5, 2, 3);
+        blockSelectionComponent.texture = Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.blue).setAlpha(100)),
                 Texture.class).get();
         tempTaskEntity = entityManager.create(blockSelectionComponent);
         logger.error("TempTask entity is : {}", tempTaskEntity.toFullDescription());
