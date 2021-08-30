@@ -3,7 +3,7 @@
 
 package org.terasology.tutorialpathfinding.PathHighlighting;
 
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.event.Event;
 import org.joml.Vector3i;
 
 import java.util.ArrayList;

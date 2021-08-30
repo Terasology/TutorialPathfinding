@@ -4,8 +4,8 @@
 package org.terasology.tutorialpathfinding.events;
 
 import org.joml.Vector3f;
-import org.terasology.entitySystem.event.Event;
-import org.terasology.entitySystem.prefab.Prefab;
+import org.terasology.engine.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.prefab.Prefab;
 
 
 public class CharacterSpawnEvent implements Event {
