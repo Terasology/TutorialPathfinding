@@ -3,7 +3,8 @@
 
 package org.terasology.tutorialpathfinding.components;
 
-import org.terasology.engine.entitySystem.Component;
 
-public class FindBlockTesterComponent implements Component {
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
+
+public class FindBlockTesterComponent extends EmptyComponent<FindBlockTesterComponent> {
 }

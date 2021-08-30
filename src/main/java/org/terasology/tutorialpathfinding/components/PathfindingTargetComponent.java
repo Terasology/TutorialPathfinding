@@ -3,8 +3,9 @@
 
 package org.terasology.tutorialpathfinding.components;
 
-import org.terasology.engine.entitySystem.Component;
 
-public class PathfindingTargetComponent implements Component {
+import org.terasology.gestalt.entitysystem.component.EmptyComponent;
+
+public class PathfindingTargetComponent extends EmptyComponent<PathfindingTargetComponent> {
 
 }
