@@ -4,17 +4,18 @@
 package org.terasology.tutorialpathfinding.PathHighlighting;
 
 import org.joml.Vector3i;
-import org.terasology.entitySystem.event.Event;
+import org.terasology.engine.entitySystem.event.Event;
 
 public class HighlightBlockEvent implements Event {
 
     private Vector3i blockPos;
 
+    public HighlightBlockEvent(Vector3i blockPosition) {
+        setBlockPositions(blockPosition);
+    }
+
     public Vector3i getBlockPosition() {
         return blockPos;
-    }
-    public HighlightBlockEvent(Vector3i blockPosition){
-        setBlockPositions(blockPosition);
     }
 
     public void setBlockPositions(Vector3i blockPosition) {

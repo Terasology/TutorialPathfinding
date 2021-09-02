@@ -4,19 +4,23 @@
 package org.terasology.tutorialpathfinding.systems;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.event.ReceiveEvent;
-import org.terasology.entitySystem.systems.BaseComponentSystem;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.logic.common.ActivateEvent;
-import org.terasology.logic.inventory.InventoryManager;
-import org.terasology.logic.players.LocalPlayer;
-import org.terasology.logic.players.event.OnPlayerSpawnedEvent;
 import org.joml.Vector3f;
 import org.joml.Vector3i;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.event.ReceiveEvent;
+import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.logic.common.ActivateEvent;
+import org.terasology.engine.logic.players.LocalPlayer;
+import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
+import org.terasology.engine.registry.CoreRegistry;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.world.block.BlockManager;
+import org.terasology.engine.world.block.items.BlockItemFactory;
+import org.terasology.module.inventory.systems.InventoryManager;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphSystem;
 import org.terasology.navgraph.WalkableBlock;
@@ -24,16 +28,11 @@ import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.pathfinding.model.LineOfSight2d;
 import org.terasology.pathfinding.model.Path;
 import org.terasology.pathfinding.model.Pathfinder;
-import org.terasology.registry.CoreRegistry;
-import org.terasology.registry.In;
 import org.terasology.tutorialpathfinding.PathHighlighting.HighlightBlockEvent;
 import org.terasology.tutorialpathfinding.PathHighlighting.HighlightPathEvent;
 import org.terasology.tutorialpathfinding.components.FindBlockTesterComponent;
 import org.terasology.tutorialpathfinding.components.PathEndComponent;
 import org.terasology.tutorialpathfinding.components.PathStartComponent;
-import org.terasology.world.block.Block;
-import org.terasology.world.block.BlockManager;
-import org.terasology.world.block.items.BlockItemFactory;
 
 import java.util.ArrayList;
 
@@ -95,7 +94,7 @@ public class PathTestingSystem extends BaseComponentSystem {
 
     }
 
-    @ReceiveEvent(components = {PathStartComponent.class})
+    @ReceiveEvent(components = PathStartComponent.class)
     public void startPath(ActivateEvent event, EntityRef entityRef) {
         //logger.error("path start at {}",event.getHitPosition().toString());
         logger.error("path start at {}", event.getInstigatorLocation().toString());
@@ -107,7 +106,7 @@ public class PathTestingSystem extends BaseComponentSystem {
 
     }
 
-    @ReceiveEvent(components = {FindBlockTesterComponent.class})
+    @ReceiveEvent(components = FindBlockTesterComponent.class)
     public void findBlockUnder(ActivateEvent event, EntityRef entityRef) {
         //logger.error("path start at {}",event.getHitPosition().toString());
 
@@ -129,7 +128,7 @@ public class PathTestingSystem extends BaseComponentSystem {
 
     }
 
-    @ReceiveEvent(components = {PathEndComponent.class})
+    @ReceiveEvent(components = PathEndComponent.class)
     public void endPath(ActivateEvent event, EntityRef entityRef) {
         // logger.error(entityRef.toFullDescription());
         logger.error("path end at {}", event.getInstigatorLocation().toString());

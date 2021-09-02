@@ -7,47 +7,43 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.terasology.entitySystem.entity.EntityBuilder;
-import org.terasology.entitySystem.entity.EntityManager;
-import org.terasology.entitySystem.entity.EntityRef;
-import org.terasology.entitySystem.systems.RegisterSystem;
-import org.terasology.entitySystem.systems.RenderSystem;
-import org.terasology.entitySystem.systems.UpdateSubscriberSystem;
-import org.terasology.logic.location.LocationComponent;
-import org.terasology.logic.nameTags.NameTagComponent;
+import org.terasology.engine.entitySystem.entity.EntityBuilder;
+import org.terasology.engine.entitySystem.entity.EntityManager;
+import org.terasology.engine.entitySystem.entity.EntityRef;
+import org.terasology.engine.entitySystem.systems.RegisterSystem;
+import org.terasology.engine.entitySystem.systems.RenderSystem;
+import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
+import org.terasology.engine.logic.location.LocationComponent;
+import org.terasology.engine.logic.nameTags.NameTagComponent;
+import org.terasology.engine.registry.In;
+import org.terasology.engine.rendering.assets.texture.Texture;
+import org.terasology.engine.rendering.assets.texture.TextureUtil;
+import org.terasology.engine.rendering.world.selection.BlockSelectionRenderer;
+import org.terasology.engine.utilities.Assets;
 import org.terasology.navgraph.Floor;
 import org.terasology.navgraph.NavGraphChunk;
 import org.terasology.navgraph.WalkableBlock;
 import org.terasology.nui.Color;
 import org.terasology.pathfinding.componentSystem.PathfinderSystem;
-import org.terasology.registry.In;
-import org.terasology.rendering.assets.texture.Texture;
-import org.terasology.rendering.assets.texture.TextureUtil;
-import org.terasology.rendering.world.selection.BlockSelectionRenderer;
-import org.terasology.utilities.Assets;
-import org.terasology.world.WorldProvider;
 
 import java.util.ArrayList;
 
 @RegisterSystem
 public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
 
-    Logger logger = LoggerFactory.getLogger(FloorRenderer.class);
+    private static final Logger logger = LoggerFactory.getLogger(FloorRenderer.class);
+
+    @In
+    PathfinderSystem pathfinderSystem;
+    @In
+    EntityManager entityManager;
 
     private ArrayList<Integer> namedFloors;
-
 
     private BlockSelectionRenderer blueRenderer;
     private BlockSelectionRenderer redRenderer;
     private BlockSelectionRenderer greenRenderer;
     private BlockSelectionRenderer entranceRenderer;
-
-    @In
-    WorldProvider worldProvider;
-    @In
-    PathfinderSystem pathfinderSystem;
-    @In
-    EntityManager entityManager;
 
     @Override
     public void renderOpaque() {
