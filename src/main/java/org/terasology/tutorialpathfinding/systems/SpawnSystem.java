@@ -19,14 +19,14 @@ import org.terasology.engine.logic.common.ActivateEvent;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.logic.players.LocalPlayer;
 import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.minion.move.MinionMoveComponent;
 import org.terasology.engine.registry.In;
-import org.terasology.module.inventory.systems.InventoryManager;
-import org.terasology.tutorialpathfinding.components.SpawnEntityComponent;
-import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 import org.terasology.engine.world.OnChangedBlock;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
+import org.terasology.minion.move.MinionMoveComponent;
+import org.terasology.module.inventory.systems.InventoryManager;
+import org.terasology.tutorialpathfinding.components.SpawnEntityComponent;
+import org.terasology.tutorialpathfinding.events.CharacterSpawnEvent;
 
 import java.util.ArrayList;
 
@@ -51,7 +51,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
     private Vector3f targetPosition = new Vector3f();
 
-    Prefab baseGooey;
+    private Prefab baseGooey;
 
     private EntityRef targetEntity;
 
@@ -85,7 +85,7 @@ public class SpawnSystem extends BaseComponentSystem {
 
     }
 
-    @ReceiveEvent(components = {SpawnEntityComponent.class})
+    @ReceiveEvent(components = SpawnEntityComponent.class)
     public void setTarget(ActivateEvent event, EntityRef entityRef) {
         for (Vector3i spawnerPos : spawnerPositions) {
             Vector3f floatSpawnerPos = new Vector3f(spawnerPos);

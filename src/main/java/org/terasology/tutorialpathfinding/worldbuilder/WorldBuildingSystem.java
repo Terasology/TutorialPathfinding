@@ -12,7 +12,6 @@ import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.logic.players.event.OnPlayerSpawnedEvent;
-import org.terasology.nui.Color;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.assets.texture.Texture;
 import org.terasology.engine.rendering.assets.texture.TextureUtil;
@@ -22,10 +21,15 @@ import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
 import org.terasology.engine.world.block.BlockRegion;
 import org.terasology.engine.world.selection.BlockSelectionComponent;
+import org.terasology.nui.Color;
 
 
 @RegisterSystem
 public class WorldBuildingSystem extends BaseComponentSystem {
+
+    private static final Logger logger = LoggerFactory.getLogger(WorldBuildingSystem.class);
+
+    private static final int SURFACE_HEIGHT = 9;
 
     @In
     private BlockManager blockManager;
@@ -34,12 +38,7 @@ public class WorldBuildingSystem extends BaseComponentSystem {
     @In
     private EntityManager entityManager;
 
-    private final Logger logger = LoggerFactory.getLogger(WorldBuildingSystem.class);
-
-    Block ground;
-    Block air;
-
-    private final int SURFACE_HEIGHT = 9;
+    private Block ground;
 
     private int level = 0;
 
@@ -48,7 +47,6 @@ public class WorldBuildingSystem extends BaseComponentSystem {
     @ReceiveEvent
     public void onPlayerSpawn(OnPlayerSpawnedEvent event, EntityRef player) {
         ground = blockManager.getBlock("CoreAssets:Plank");
-        air = blockManager.getBlock("engine:air");
 
         String[] test = new String[10];
         test[0] = "1151151115";

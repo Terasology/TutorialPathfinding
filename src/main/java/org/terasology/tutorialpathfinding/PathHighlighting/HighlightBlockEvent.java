@@ -10,11 +10,12 @@ public class HighlightBlockEvent implements Event {
 
     private Vector3i blockPos;
 
+    public HighlightBlockEvent(Vector3i blockPosition) {
+        setBlockPositions(blockPosition);
+    }
+
     public Vector3i getBlockPosition() {
         return blockPos;
-    }
-    public HighlightBlockEvent(Vector3i blockPosition){
-        setBlockPositions(blockPosition);
     }
 
     public void setBlockPositions(Vector3i blockPosition) {

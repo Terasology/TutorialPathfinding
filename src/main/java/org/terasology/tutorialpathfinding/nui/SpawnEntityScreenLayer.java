@@ -31,7 +31,7 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
 
     private UIButton spawnEntity;
 
-    Prefab baseGoeey;
+    private Prefab baseGoeey;
 
     private EntityRef spawnerEntity;
 
@@ -55,9 +55,8 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
 
         setPrefab(baseGoeey);
 
-
         spawnCritter1.subscribe(button -> {
-            if(spawnerEntity.exists()==false){
+            if (!spawnerEntity.exists()) {
                 logger.error("inside subscribe doesnt exist");
             }
             setPrefab(baseGoeey);
@@ -79,7 +78,7 @@ public class SpawnEntityScreenLayer extends CoreScreenLayer {
                 LocationComponent.class)) {
             spawnerEntity = spawner;
 
-            if(spawnerEntity.exists()==false){
+            if (!spawnerEntity.exists()) {
                 logger.error("doesnt exist in setspawnerentity ");
             }
             logger.error(spawnerEntity.toFullDescription());

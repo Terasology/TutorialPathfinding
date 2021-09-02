@@ -3,20 +3,22 @@
 
 package org.terasology.tutorialpathfinding.PathHighlighting;
 
-import org.terasology.engine.entitySystem.event.Event;
 import org.joml.Vector3i;
+import org.terasology.engine.entitySystem.event.Event;
 
 import java.util.ArrayList;
 
 public class HighlightPathEvent implements Event {
     private ArrayList<Vector3i> blockPositions;
 
+    public HighlightPathEvent(ArrayList<Vector3i> blockPositions) {
+        setBlockPositions(blockPositions);
+    }
+
     public ArrayList<Vector3i> getBlockPositions() {
         return blockPositions;
     }
-    public HighlightPathEvent(ArrayList<Vector3i> blockPositions){
-        setBlockPositions(blockPositions);
-    }
+
 
     public void setBlockPositions(ArrayList<Vector3i> blockPositions) {
         this.blockPositions = blockPositions;

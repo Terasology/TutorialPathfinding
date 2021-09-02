@@ -12,7 +12,6 @@ import org.terasology.engine.entitySystem.event.ReceiveEvent;
 import org.terasology.engine.entitySystem.systems.BaseComponentSystem;
 import org.terasology.engine.entitySystem.systems.RegisterSystem;
 import org.terasology.engine.entitySystem.systems.RenderSystem;
-import org.terasology.nui.Color;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.assets.texture.Texture;
 import org.terasology.engine.rendering.assets.texture.TextureUtil;
@@ -21,6 +20,7 @@ import org.terasology.engine.utilities.Assets;
 import org.terasology.engine.world.WorldProvider;
 import org.terasology.engine.world.block.Block;
 import org.terasology.engine.world.block.BlockManager;
+import org.terasology.nui.Color;
 
 import java.util.ArrayList;
 
@@ -29,7 +29,7 @@ import static org.joml.Math.abs;
 @RegisterSystem
 public class PathHighlightingSystem extends BaseComponentSystem implements RenderSystem {
 
-    Logger logger = LoggerFactory.getLogger(PathHighlightingSystem.class);
+    private static final Logger logger = LoggerFactory.getLogger(PathHighlightingSystem.class);
 
     @In
     private BlockManager blockManager;
@@ -38,11 +38,10 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
 
     private boolean pathsChanged;
 
-    BlockSelectionRenderer pathRenderer;
+    private BlockSelectionRenderer pathRenderer;
 
-    ArrayList<Vector3i> connectedPath;
-    Vector3i blockPos;
-
+    private ArrayList<Vector3i> connectedPath;
+    private Vector3i blockPos;
 
     @ReceiveEvent
     public void highlightblocks(HighlightPathEvent event, EntityRef entityRef) {
@@ -65,31 +64,23 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
 
     }
 
-    public void highlightBlock(Vector3i blockPosition){
-
+    public void highlightBlock(Vector3i blockPosition) {
         this.blockPos = blockPosition;
-
     }
 
     public ArrayList<Vector3i> connectDisconnectedPaths(ArrayList<Vector3i> blocks) {
         ArrayList<Vector3i> connectedPath1 = new ArrayList<>();
 
-
         logger.error("Connected nodes are ");
 
-
         for (int i = 1; i < blocks.size(); i++) {
-
             Vector3i currentBlock = blocks.get(i);
             Vector3i previousBlock = blocks.get(i - 1);
             logger.error("Connecting {} to {} ", previousBlock.toString(), currentBlock.toString());
             ArrayList<Vector3i> connectedNodes = connectNodes(previousBlock, currentBlock);
             //logger.error(connectedNodes.toString());
             connectedPath1.addAll(connectedNodes);
-
         }
-
-
         return connectedPath1;
     }
 
@@ -98,7 +89,7 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
      *
      * @param ptA First point
      * @param ptB Second point
-     * @return Arraylist <Vector3i></> of the block positions that lie on the line.
+     * @return a list of the block positions that lie on the line.
      */
 
     public ArrayList<Vector3i> connectNodes(Vector3i ptA, Vector3i ptB) {
@@ -144,7 +135,6 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
                 new BlockSelectionRenderer(Assets.get(TextureUtil.getTextureUriForColor(new Color(Color.magenta).setAlpha(55)),
                         Texture.class).get());
         pathsChanged = false;
-
     }
 
     @Override
@@ -154,26 +144,18 @@ public class PathHighlightingSystem extends BaseComponentSystem implements Rende
 
     @Override
     public void renderAlphaBlend() {
-
         pathRenderer.beginRenderOverlay();
         if (pathsChanged) {
-
             for (Vector3i pos : connectedPath) {
                 pathRenderer.renderMark(pos);
-
             }
-
         }
 
-        if(blockPos!=null) {
+        if (blockPos != null) {
             pathRenderer.renderMark(blockPos);
         }
 
-
-
         pathRenderer.endRenderOverlay();
-
-
     }
 
     @Override

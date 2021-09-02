@@ -8,8 +8,7 @@ import org.terasology.gestalt.entitysystem.component.Component;
 
 public class PathfindingSpawnerComponent implements Component<PathfindingSpawnerComponent> {
 
-    public Prefab prefabToSpawn ;
-
+    public Prefab prefabToSpawn;
 
     @Override
     public void copyFrom(PathfindingSpawnerComponent other) {

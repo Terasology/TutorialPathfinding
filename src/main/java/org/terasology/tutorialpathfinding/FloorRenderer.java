@@ -15,39 +15,35 @@ import org.terasology.engine.entitySystem.systems.RenderSystem;
 import org.terasology.engine.entitySystem.systems.UpdateSubscriberSystem;
 import org.terasology.engine.logic.location.LocationComponent;
 import org.terasology.engine.logic.nameTags.NameTagComponent;
-import org.terasology.navgraph.Floor;
-import org.terasology.navgraph.NavGraphChunk;
-import org.terasology.navgraph.WalkableBlock;
-import org.terasology.nui.Color;
-import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 import org.terasology.engine.registry.In;
 import org.terasology.engine.rendering.assets.texture.Texture;
 import org.terasology.engine.rendering.assets.texture.TextureUtil;
 import org.terasology.engine.rendering.world.selection.BlockSelectionRenderer;
 import org.terasology.engine.utilities.Assets;
-import org.terasology.engine.world.WorldProvider;
+import org.terasology.navgraph.Floor;
+import org.terasology.navgraph.NavGraphChunk;
+import org.terasology.navgraph.WalkableBlock;
+import org.terasology.nui.Color;
+import org.terasology.pathfinding.componentSystem.PathfinderSystem;
 
 import java.util.ArrayList;
 
 @RegisterSystem
 public class FloorRenderer implements RenderSystem, UpdateSubscriberSystem {
 
-    Logger logger = LoggerFactory.getLogger(FloorRenderer.class);
+    private static final Logger logger = LoggerFactory.getLogger(FloorRenderer.class);
+
+    @In
+    PathfinderSystem pathfinderSystem;
+    @In
+    EntityManager entityManager;
 
     private ArrayList<Integer> namedFloors;
-
 
     private BlockSelectionRenderer blueRenderer;
     private BlockSelectionRenderer redRenderer;
     private BlockSelectionRenderer greenRenderer;
     private BlockSelectionRenderer entranceRenderer;
-
-    @In
-    WorldProvider worldProvider;
-    @In
-    PathfinderSystem pathfinderSystem;
-    @In
-    EntityManager entityManager;
 
     @Override
     public void renderOpaque() {
